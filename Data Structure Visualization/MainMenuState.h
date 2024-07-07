@@ -1,6 +1,6 @@
 #pragma once
 #include "State.h"
-#include "Button.h"
+#include "GUI.h"
 #include "HeapState.h"
 class MainMenuState :
     public State
@@ -11,7 +11,8 @@ private: //Variables
 
 	sf::Font font;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
+
 private: // Functions
 	void initBackground();
 	void initFont();
