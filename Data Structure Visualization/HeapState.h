@@ -6,17 +6,28 @@ class HeapState : public State
 {
 
 enum OperationState{Create = 0, Insert, Delete, GetTop, Size};
+enum CreateState{Manually = 0, Random, File};
 private:
 	sf::Texture BackGroundTexture;
 	sf::Sprite BackGroundSprite;
-	gui::ImageButton* BackButton;
+
 	std::map<std::string, sf::Font> fonts;
 
+	gui::ImageButton* BackButton;
 	gui::Button* DoButton;
+
 	gui::DropdownList* OperationButton;
+	gui::DropdownList* CreateType;
+
+	gui::TextBox* InputManuallyValue;
+	gui::TextBox* InputRandomValue;
+	gui::TextBox* EnterTheValue;
+
+	sf::Text* NumberOfVal;
+	sf::Text* EnterTheVal;
 
 	unsigned operationState = 0;
-
+	unsigned createState = 0;
 public:
 
 	// Constructor & Destructor
@@ -24,12 +35,12 @@ public:
 	virtual ~HeapState();
 
 	void checkForEnd();
-	
+
 	// Initialization
 	void initFont();
 	void initBackground();
-	void initButton();
-
+	void initGUI();
+	void initText();
 	// Update Funtions
 	void updateKeybinds(const float& dt);
 	void updateOperationState();

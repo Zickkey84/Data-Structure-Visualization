@@ -27,7 +27,5 @@ void State::checkForEnd()
 void State::updateMousePos()
 {
 	this->MousePos = sf::Mouse::getPosition(*this->window);
-
 	system("cls");
-	std::cout << this->MousePos.x << " " << this->MousePos.y;
 }
