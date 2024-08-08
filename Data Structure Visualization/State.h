@@ -4,12 +4,15 @@
 #include "SFML/Window.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Audio.hpp"
-#include  "SFML/Network.hpp"
+#include "SFML/Network.hpp"
+#include "OpenFileDialog.h"
+#include "Miscellaneous.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+#include <math.h>
 #include <vector>
 #include <stack>
 #include <map>
@@ -22,10 +25,11 @@ protected:
 	sf::RenderWindow* window;
 	std::vector<sf::Texture> textures;
 	bool end;
+	bool DarkMode = false;
 
 public: // Constructor & Destructor
 	sf::Vector2i MousePos;
-	State(sf::RenderWindow* window, std::stack<State*>* states);
+	State(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode);
 	virtual ~State();
 
 public: //Functions

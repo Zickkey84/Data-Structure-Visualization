@@ -1,6 +1,6 @@
-#include "HeapState.h"
+#include "AVLState.h"
 
-HeapState::HeapState(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode) : State(window, states, DarkMode)
+AVLState::AVLState(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode) : State(window, states, DarkMode)
 {
 	this->initBackground();
 	this->initFont();
@@ -8,13 +8,13 @@ HeapState::HeapState(sf::RenderWindow* window, std::stack<State*>* states, bool 
 	this->initText();
 }
 
-HeapState::~HeapState()
+AVLState::~AVLState()
 {
 	// Button
 	delete this->BackButton;
 	delete this->OperationButton;
 	delete this->DoButton;
-	delete this->InputFileButton;
+
 	// Text Box
 	delete this->InputManuallyValue;
 	delete this->InputRandomValue;
@@ -26,12 +26,12 @@ HeapState::~HeapState()
 
 }
 
-void HeapState::checkForEnd()
+void AVLState::checkForEnd()
 {
 	if (this->BackButton->isPressed()) this->end = true;
 }
 
-void HeapState::initFont()
+void AVLState::initFont()
 {
 	if (!this->fonts["LexendDeca-Bold"].loadFromFile("../Resources/Font/Lexend Deca/LexendDeca-Bold.ttf")) {
 		std::cerr << "Error loading LexendDeca Bold font!\n";
@@ -43,22 +43,26 @@ void HeapState::initFont()
 	this->fonts["LexendDeca-Regular"].setSmooth(true);
 }
 
-void HeapState::initBackground()
+void AVLState::initBackground()
 {
 	if (this->DarkMode) {
-		if (!this->BackGroundTexture.loadFromFile("../Resources/Images/Heap Background - DM.png")) std::cerr << "Error loading Heap background!\n";
+		if (!this->BackGroundTexture.loadFromFile("../Resources/Images/AVLTree Background - DM.png")) {
+			std::cerr << "Error loading AVLTree background!\n";
+		}
 	}
 	else {
-		if (!this->BackGroundTexture.loadFromFile("../Resources/Images/Heap Background.png")) std::cerr << "Error loading Heap background!\n";
+		if (!this->BackGroundTexture.loadFromFile("../Resources/Images/AVLTree Background.png")) {
+			std::cerr << "Error loading AVLTree background!\n";
+		}
 	}
 	this->BackGroundSprite.setTexture(this->BackGroundTexture);
 }
 
-void HeapState::initGUI()
+void AVLState::initGUI()
 {
 	// Init Back Button
 	this->BackButton = new gui::ImageButton(10.f, 10.f,
-		"../Resources/Images/BackArrow.png", 
+		"../Resources/Images/BackArrow.png",
 		"../Resources/Images/Hover_BackArrow.png",
 		"../Resources/Images/BackArrow - DM.png",
 		"../Resources/Images/Hover_BackArrow - DM.png");
@@ -75,7 +79,6 @@ void HeapState::initGUI()
 		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
 		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
 
-	
 	// Init Create Type Button
 	std::vector<std::string> typelist;
 	typelist.push_back("Manually");
@@ -91,9 +94,9 @@ void HeapState::initGUI()
 	this->DoButton = new gui::Button(1232, 100, 172, 50, "DO", &this->fonts["LexendDeca-Bold"],
 		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
 		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
-	
+
 	// Init Input File Button
-	
+
 	this->InputFileButton = new gui::Button(1055, 210, 350, 50, "Input File", &this->fonts["LexendDeca-Bold"],
 		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
 		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
@@ -113,7 +116,8 @@ void HeapState::initGUI()
 		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
 }
 
-void HeapState::initText()
+
+void AVLState::initText()
 {
 	this->NumberOfVal = new sf::Text("Number Of Value (Max 40): ", this->fonts["LexendDeca-Regular"], 20);
 	this->NumberOfVal->setPosition(sf::Vector2f(1055, 220));
@@ -132,13 +136,13 @@ void HeapState::initText()
 }
 
 
-void HeapState::updateKeybinds(const float& dt)
+void AVLState::updateKeybinds(const float& dt)
 {
 	this->checkForEnd();
 
 }
 
-void HeapState::updateOperationState()
+void AVLState::updateOperationState()
 {
 	std::string OpeState = this->OperationButton->getActiveEle();
 	if (OpeState == "Create") {
@@ -156,7 +160,7 @@ void HeapState::updateOperationState()
 
 }
 
-void HeapState::update(const float& dt) {
+void AVLState::update(const float& dt) {
 	this->updateMousePos();
 	this->updateKeybinds(dt);
 	this->BackButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
@@ -180,7 +184,6 @@ void HeapState::update(const float& dt) {
 				if (evnt.type == sf::Event::Closed) this->window->close();
 			}
 		}
-
 		if (this->createState == File) {
 			this->InputFileButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
 			if (this->InputFileButton->isPressed()) {
@@ -189,7 +192,7 @@ void HeapState::update(const float& dt) {
 				sf::Text fileName;
 				fileName.setFont(this->fonts["LexendDeca-Regular"]);
 				fileName.setString(GetNameFileDialog(this->FileName));
-				fileName.setCharacterSize(22); 
+				fileName.setCharacterSize(22);
 				fileName.setFillColor(sf::Color(49, 53, 110));
 				this->InputFileButton->setText(fileName);
 				setCurrentWorkingDirectory(currentDir);
@@ -207,7 +210,7 @@ void HeapState::update(const float& dt) {
 	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
 }
 
-void HeapState::render(sf::RenderTarget* target)
+void AVLState::render(sf::RenderTarget* target)
 {
 	if (!target) target = this->window;
 	target->draw(this->BackGroundSprite);

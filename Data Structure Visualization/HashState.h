@@ -2,8 +2,7 @@
 
 #include "State.h"
 #include "GUI.h"
-
-class HeapState : public State
+class HashState : public State
 {
 
 enum OperationState{Create = 0, Insert, Delete, GetTop, Size};
@@ -35,8 +34,8 @@ private:
 public:
 
 	// Constructor & Destructor
-	HeapState(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode);
-	virtual ~HeapState();
+	HashState(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode);
+	virtual ~HashState();
 
 	void checkForEnd();
 
@@ -54,17 +53,10 @@ public:
 	void render(sf::RenderTarget* target = nullptr);
 
 public: //Struct
-	struct Heap {
-		std::vector<int> arr;
-		int n, capacity;
-
-		void insert(int key);
-		void del(int key);
-		int left(int i);
-		int right(int i);
-		int parent(int i);
-		int getRoot();
-		void heapify(int i);
+	struct Node {
+		int val, depth, index, order;
+		Node* left, * right;
+		bool isHighlighted;
 	};
 	
 };

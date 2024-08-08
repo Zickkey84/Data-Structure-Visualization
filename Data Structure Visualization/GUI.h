@@ -20,15 +20,20 @@ namespace gui
 		sf::Text text;
 
 		int borderThickness;
-		sf::Color borderColor;
+		sf::Color textColor;
 		sf::Color idleColor;
+		sf::Color borderColor;
 		sf::Color hoverColor;
 		sf::Color pressedColor;
 
+		sf::Color DM_textColor;
+		sf::Color DM_borderColor;
+		sf::Color DM_idleColor;
 	public: // Constructor
 		Button(float x, float y, float width, float height,
 			std::string t, sf::Font* font, sf::Color textColor, int textsize,
-			sf::Color idleColor, sf::Color borderColor, int borderThickness, sf::Color hoverColor, sf::Color pressedColor);
+			sf::Color idleColor, sf::Color borderColor, int borderThickness, sf::Color hoverColor, sf::Color pressedColor, 
+			sf::Color DM_textColor, sf::Color DM_idleColor, sf::Color DM_borderColor);
 		~Button();
 	public:
 		// Getter
@@ -37,8 +42,11 @@ namespace gui
 		const sf::FloatRect getBounds() const;
 		// Setter 
 		void setText(sf::Text text);
+		void setTextColor(sf::Color textColor);
+		void setIdleColor(sf::Color idleColor);
+		void setborderColor(sf::Color borderColor);
 	public:
-		void update(const sf::Vector2f mousePos);
+		void update(const sf::Vector2f mousePos, bool DarkMode);
 		void render(sf::RenderTarget& target);
 	public:
 		bool isMouseOver(sf::RenderWindow& window);
@@ -50,13 +58,23 @@ namespace gui
 	{
 		enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_PRESSED };
 	private:
+		float keyTime = 0.f;
+		float keyTimeMax = 1.f;
 		short unsigned buttonState;
 		sf::Texture idelTexture;
 		sf::Texture hoverTexture;
+		sf::Texture DM_idelTexture;
+		sf::Texture DM_hoverTexture;
 		sf::Sprite IMG_Button;
+
 	public:
-		ImageButton(float x, float y, std::string idelTextureFile, std::string hoverTextureFile);
-		void update(const sf::Vector2f mousePos);
+		ImageButton(float x, float y, std::string idelTextureFile, std::string hoverTextureFile, std::string DM_idelTextureFile, std::string DM_hoverTextureFile);
+		
+		const bool getKeyTime();
+		void updateKeyTime(const float dt);
+		
+		void updateDM();
+		void update(const sf::Vector2f mousePos, const float dt, bool DarkMode);
 		void render(sf::RenderTarget& target);
 		bool isPressed();
 	};
@@ -76,14 +94,15 @@ namespace gui
 		DropdownList(float x, float y, float width, float height, 
 			sf::Font* font, std::vector<std::string> list, sf::Color textColor, 
 			int textsize, sf::Color idleColor, sf::Color borderColor, 
-			int borderThickness, sf::Color hoverColor, sf::Color pressedColor);
+			int borderThickness, sf::Color hoverColor, sf::Color pressedColor,
+			sf::Color DM_textColor, sf::Color DM_idleColor, sf::Color DM_borderColor);
 		~DropdownList();
 
 		const bool getKeyTime();
 		const std::string getActiveEle();
 		// Update
 		void updateKeyTime(const float dt);
-		void update(const sf::Vector2f& mousePos, const float dt);
+		void update(const sf::Vector2f& mousePos, const float dt, bool DarkMode);
 
 		// Render
 		void render(sf::RenderTarget& target);

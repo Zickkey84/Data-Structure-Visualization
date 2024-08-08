@@ -1,7 +1,8 @@
 #include "State.h"
 
-State::State(sf::RenderWindow* window, std::stack<State*>* states)
+State::State(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode)
 {
+	this->DarkMode = DarkMode;
 	this->window = window;
 	this->states = states;
 	this->end = false;

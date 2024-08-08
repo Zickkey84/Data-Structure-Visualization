@@ -19,7 +19,10 @@
     <Filter Include="Main">
       <UniqueIdentifier>{9b92e105-fbe9-4a2a-96e1-0dc144cb52e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Button">
+    <Filter Include="Header Files\Data Structure">
+      <UniqueIdentifier>{1a15babd-918f-4f07-919b-0b2291660d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool">
       <UniqueIdentifier>{c900a3cf-7275-4c55-b635-9e961c88b520}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -40,7 +43,28 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="GUI.cpp">
-      <Filter>Button</Filter>
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="234TreeState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AVLState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HashState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrieState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Heap Algorithm.cpp">
+      <Filter>Header Files\Data Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous.h">
+      <Filter>Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +81,25 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
-      <Filter>Button</Filter>
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="234TreeState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="AVLState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="HashState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="TrieState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenFileDialog.h">
+      <Filter>Tool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

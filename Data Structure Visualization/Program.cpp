@@ -29,7 +29,7 @@ void Program::initWindow()
 
 void Program::initState()
 {
-	this->states.push(new MainMenuState(this->window, &this->states));
+	this->states.push(new MainMenuState(this->window, &this->states, false));
 }
 
 // Constructor / Destructor

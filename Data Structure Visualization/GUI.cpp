@@ -6,7 +6,8 @@
 // Constructor 
 gui::Button::Button(float x, float y, float width, float height,
 	std::string t, sf::Font* font, sf::Color textColor, int textsize,
-	sf::Color idleColor, sf::Color borderColor, int borderThickness, sf::Color hoverColor, sf::Color pressedColor)
+	sf::Color idleColor, sf::Color borderColor, int borderThickness, sf::Color hoverColor, sf::Color pressedColor,
+	sf::Color DM_textColor, sf::Color DM_idleColor, sf::Color DM_borderColor)
 {
 	this->button.setPosition(sf::Vector2f(x, y));
 	this->button.setSize(sf::Vector2f(width, height));
@@ -22,12 +23,16 @@ gui::Button::Button(float x, float y, float width, float height,
 	float yPos = (y + height / 2.0f);
 	this->text.setPosition({ round(xPos), round(yPos) - 5.f});
 
+	this->textColor = textColor;
 	this->borderThickness = borderThickness;
 	this->borderColor = borderColor;
 	this->idleColor = idleColor;
 	this->hoverColor = hoverColor;
 	this->pressedColor = pressedColor;
 
+	this->DM_textColor = DM_textColor;
+	this->DM_idleColor = DM_idleColor;
+	this->DM_borderColor = DM_borderColor;
 }
 
 gui::Button::~Button()
@@ -63,7 +68,22 @@ void gui::Button::setText(const sf::Text text)
 	this->text.setPosition({ round(xPos), round(yPos) - 5.f });
 }
 
-void gui::Button::update(const sf::Vector2f mousePos)
+void gui::Button::setTextColor(sf::Color textColor)
+{
+	this->text.setFillColor(textColor);
+}
+
+void gui::Button::setIdleColor(sf::Color idleColor)
+{
+	this->idleColor = idleColor;
+}
+
+void gui::Button::setborderColor(sf::Color borderColor)
+{
+	this->borderColor = borderColor;
+}
+
+void gui::Button::update(const sf::Vector2f mousePos, bool DarkMode)
 {
 	this->buttonState = BTN_IDLE;
 	if (this->button.getGlobalBounds().contains(mousePos)) 
@@ -79,8 +99,16 @@ void gui::Button::update(const sf::Vector2f mousePos)
 	switch (buttonState)
 	{
 	case BTN_IDLE:
-		this->button.setFillColor(this->idleColor);
-		this->button.setOutlineColor(this->borderColor);
+		if (DarkMode) {
+			this->text.setFillColor(this->DM_textColor);
+			this->button.setFillColor(this->DM_idleColor);
+			this->button.setOutlineColor(this->DM_borderColor);
+		}
+		else {
+			this->text.setFillColor(this->textColor);
+			this->button.setFillColor(this->idleColor);
+			this->button.setOutlineColor(this->borderColor);
+		}
 		this->button.setOutlineThickness(this->borderThickness);
 		break;
 	case BTN_HOVER:
@@ -127,7 +155,7 @@ const bool gui::Button::isPressed() const
 
 // IMAGEBUTTON FUNCTION ----------------------
 
-gui::ImageButton::ImageButton(float x, float y, std::string idelTextureFile, std::string hoverTextureFile)
+gui::ImageButton::ImageButton(float x, float y, std::string idelTextureFile, std::string hoverTextureFile, std::string DM_idelTextureFile, std::string DM_hoverTextureFile)
 {
 	if (!this->idelTexture.loadFromFile(idelTextureFile)) {
 		std::cerr << "Error loading Button Texture!\n";
@@ -135,18 +163,38 @@ gui::ImageButton::ImageButton(float x, float y, std::string idelTextureFile, std
 	if (!this->hoverTexture.loadFromFile(hoverTextureFile)) {
 		std::cerr << "Error loading hoverButton Texture!\n";
 	}
+	if (!this->DM_idelTexture.loadFromFile(DM_idelTextureFile)) {
+		std::cerr << "Error loading Button Texture!\n";
+	}
+	if (!this->DM_hoverTexture.loadFromFile(DM_hoverTextureFile)) {
+		std::cerr << "Error loading hoverButton Texture!\n";
+	}
 	this->IMG_Button.setPosition(sf::Vector2f(x, y));
 }
 
-
-void gui::ImageButton::update(const sf::Vector2f mousePos)
+const bool gui::ImageButton::getKeyTime()
 {
+	if (this->keyTime >= this->keyTimeMax) {
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
+}
+
+void gui::ImageButton::updateKeyTime(const float dt)
+{
+	if (this->keyTime < this->keyTimeMax) this->keyTime += 10.f * dt;
+}
+
+void gui::ImageButton::update(const sf::Vector2f mousePos, const float dt, bool DarkMode)
+{
+	this->updateKeyTime(dt);
 	this->buttonState = BTN_IDLE;
 	if (this->IMG_Button.getGlobalBounds().contains(mousePos))
 	{
 		this->buttonState = BTN_HOVER;
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeyTime())
 		{
 			this->buttonState = BTN_PRESSED;
 		}
@@ -155,10 +203,12 @@ void gui::ImageButton::update(const sf::Vector2f mousePos)
 	switch (buttonState)
 	{
 	case BTN_IDLE:
-		this->IMG_Button.setTexture(this->idelTexture);
+		if (DarkMode) this->IMG_Button.setTexture(this->DM_idelTexture);
+		else this->IMG_Button.setTexture(this->idelTexture);
 		break;
 	case BTN_HOVER:
-		this->IMG_Button.setTexture(this->hoverTexture);
+		if (DarkMode) this->IMG_Button.setTexture(this->DM_hoverTexture);
+		else this->IMG_Button.setTexture(this->hoverTexture);		
 		break;
 	default:
 		break;
@@ -180,16 +230,19 @@ bool gui::ImageButton::isPressed()
 gui::DropdownList::DropdownList(float x, float y, float width, float height,
 	sf::Font* font, std::vector<std::string> list, sf::Color textColor, 
 	int textsize, sf::Color idleColor, sf::Color borderColor, 
-	int borderThickness, sf::Color hoverColor, sf::Color pressedColor)
+	int borderThickness, sf::Color hoverColor, sf::Color pressedColor,
+	sf::Color DM_textColor, sf::Color DM_idleColor, sf::Color DM_borderColor)
 	: font(font), isShowed(false)
 {
 	this->activeEle = new gui::Button(x, y, width, height, list[0], this->font, textColor, 
-		textsize, idleColor, borderColor, borderThickness, hoverColor, pressedColor);
+		textsize, idleColor, borderColor, borderThickness, hoverColor, pressedColor, 
+		DM_textColor, DM_idleColor, DM_borderColor);
 
 	for (size_t i = 1; i < list.size(); i++) {
-		this->list.push_back (
+		this->list.push_back(
 			new gui::Button(x, y + (i * (height + 5)), width, height, list[i], this->font,
-				textColor, textsize, idleColor, borderColor, borderThickness, hoverColor, pressedColor)
+				textColor, textsize, idleColor, borderColor, borderThickness, hoverColor, pressedColor,
+				DM_textColor, DM_idleColor, DM_borderColor)
 		);
 	}
 
@@ -223,10 +276,10 @@ const std::string gui::DropdownList::getActiveEle()
 	return this->activeEle->getText().getString();
 }
 
-void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt)
+void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt, bool DarkMode)
 {
 	this->updateKeyTime(dt);
-	this->activeEle->update(mousePos);
+	this->activeEle->update(mousePos, DarkMode);
 	if (activeEle->isPressed() && this->getKeyTime()) {
 		this->isShowed = !this->isShowed;
 	}
@@ -238,7 +291,7 @@ void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt)
 		this->OC_Arrow.setPoint(2, sf::Vector2f(this->activeEle->getPosition().x + round(this->activeEle->getBounds().width * 0.96666f),
 			this->activeEle->getPosition().y + round(this->activeEle->getBounds().height * 0.6f)));
 		for (auto& it : this->list) {
-			it->update(mousePos);
+			it->update(mousePos, DarkMode);
 			if (it->isPressed() && this->getKeyTime()) {
 				sf::Text temp = it->getText();
 				it->setText(this->activeEle->getText());
