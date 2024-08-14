@@ -32,22 +32,22 @@ void MainMenuState::initButton()
 
 		// Init State Button
 		this->buttons["Heap_Button"] = new gui::Button(168, 365, 288, 162, "Heap", &this->font,
-			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 		this->buttons["Hash_Table_Button"] = new gui::Button(168, 595, 288, 162, "Hash Table", &this->font,
-			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 		this->buttons["AVL_Button"] = new gui::Button(576, 365, 288, 162, "AVL Tree", &this->font,
-			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 		this->buttons["Tree234_Button"] = new gui::Button(576, 595, 288, 162, "234 Tree", &this->font,
-			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 30, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 		this->buttons["Trie_Button"] = new gui::Button(984, 365, 288, 162, "Trie", &this->font,
-			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 		this->buttons["Graph_Button"] = new gui::Button(984, 595, 288, 162, "Graph", &this->font,
-			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, sf::Color(0, 71, 255), sf::Color(0, 16, 246),
+			sf::Color(49, 53, 110), 32, sf::Color(185, 219, 244), sf::Color(49, 53, 110), 3, HoverBlue, sf::Color(0, 16, 246),
 			sf::Color(185, 219, 244), sf::Color(49, 53, 110), sf::Color(185, 219, 244));
 	}
 }
@@ -82,7 +82,7 @@ void MainMenuState::updateDarkMode(const float& dt)
 void MainMenuState::updateButton(const float& dt)
 {
 	for (auto& it : this->buttons) {
-		it.second->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
+		it.second->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 	}
 
 	if (this->buttons["Heap_Button"]->isPressed()) {

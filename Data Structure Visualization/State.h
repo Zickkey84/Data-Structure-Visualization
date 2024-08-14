@@ -7,10 +7,13 @@
 #include "SFML/Network.hpp"
 #include "OpenFileDialog.h"
 #include "Miscellaneous.h"
+#include "Color.h"
+#include "CodeHolder.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 #include <math.h>
 #include <vector>
