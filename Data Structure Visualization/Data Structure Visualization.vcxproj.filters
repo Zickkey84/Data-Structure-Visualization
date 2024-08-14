@@ -22,20 +22,17 @@
     <Filter Include="Header Files\Data Structure">
       <UniqueIdentifier>{1a15babd-918f-4f07-919b-0b2291660d59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tool">
+    <Filter Include="Header Files\Data Structure\Heap">
+      <UniqueIdentifier>{9bbab8e2-9068-4337-8403-9f146b890832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Data Structure\Hash Table">
+      <UniqueIdentifier>{96695577-05d5-4531-ab8e-4193638cfb86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ulities">
       <UniqueIdentifier>{c900a3cf-7275-4c55-b635-9e961c88b520}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="State.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HeapState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -43,35 +40,62 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="GUI.cpp">
-      <Filter>Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="234TreeState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AVLState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HashState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TrieState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Heap Algorithm.cpp">
-      <Filter>Header Files\Data Structure</Filter>
+      <Filter>Ulities</Filter>
     </ClCompile>
     <ClCompile Include="Miscellaneous.h">
-      <Filter>Tool</Filter>
+      <Filter>Ulities</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeNode.cpp">
+      <Filter>Ulities</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Ulities</Filter>
+    </ClCompile>
+    <ClCompile Include="CodeHolder.cpp">
+      <Filter>Ulities</Filter>
+    </ClCompile>
+    <ClCompile Include="Heap Algorithm.cpp">
+      <Filter>Header Files\Data Structure\Heap</Filter>
+    </ClCompile>
+    <ClCompile Include="HeapGraph.cpp">
+      <Filter>Header Files\Data Structure\Heap</Filter>
+    </ClCompile>
+    <ClCompile Include="234TreeState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="AVLState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="HashState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="TrieState.cpp">
+      <Filter>Header Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash Algorithm.cpp">
+      <Filter>Header Files\Data Structure\Hash Table</Filter>
+    </ClCompile>
+    <ClCompile Include="HashGraph.cpp">
+      <Filter>Header Files\Data Structure\Hash Table</Filter>
+    </ClCompile>
+    <ClCompile Include="HashNode.cpp">
+      <Filter>Header Files\Data Structure\Hash Table</Filter>
+    </ClCompile>
+    <ClCompile Include="HeapState.cpp">
+      <Filter>Header Files\Data Structure\Heap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="HeapState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
@@ -81,7 +105,7 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
-      <Filter>Tool</Filter>
+      <Filter>Ulities</Filter>
     </ClInclude>
     <ClInclude Include="234TreeState.h">
       <Filter>Header Files\State</Filter>
@@ -99,7 +123,28 @@
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="OpenFileDialog.h">
-      <Filter>Tool</Filter>
+      <Filter>Ulities</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeNode.h">
+      <Filter>Ulities</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Ulities</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeHolder.h">
+      <Filter>Ulities</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapGraph.h">
+      <Filter>Header Files\Data Structure\Heap</Filter>
+    </ClInclude>
+    <ClInclude Include="HashGraph.h">
+      <Filter>Header Files\Data Structure\Hash Table</Filter>
+    </ClInclude>
+    <ClInclude Include="HashNode.h">
+      <Filter>Header Files\Data Structure\Hash Table</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapState.h">
+      <Filter>Header Files\Data Structure\Heap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

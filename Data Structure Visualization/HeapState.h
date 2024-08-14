@@ -2,12 +2,13 @@
 
 #include "State.h"
 #include "GUI.h"
+#include "HeapGraph.h"
 
 class HeapState : public State
 {
 
 enum OperationState{Create = 0, Insert, Delete, GetTop, Size};
-enum CreateState{Manually = 0, Random, File};
+enum CreateState{Random = 0, File};
 private:
 	sf::Texture BackGroundTexture;
 	sf::Sprite BackGroundSprite;
@@ -23,15 +24,20 @@ private:
 	gui::DropdownList* OperationButton;
 	gui::DropdownList* CreateType;
 
-	gui::TextBox* InputManuallyValue;
 	gui::TextBox* InputRandomValue;
 	gui::TextBox* EnterTheValue;
 
 	sf::Text* NumberOfVal;
 	sf::Text* EnterTheVal;
 
+	sf::Text* noti;
+	sf::Text* code;
+
 	unsigned operationState = 0;
 	unsigned createState = 0;
+
+	Heap* heap;
+	HeapGraph* heapGraph;
 public:
 
 	// Constructor & Destructor
@@ -45,26 +51,14 @@ public:
 	void initBackground();
 	void initGUI();
 	void initText();
+	void initHeapGraph();
 	// Update Funtions
 	void updateKeybinds(const float& dt);
 	void updateOperationState();
+	void updateNoti();
 	void update(const float& dt);
 
 	// Render Functions
 	void render(sf::RenderTarget* target = nullptr);
 
-public: //Struct
-	struct Heap {
-		std::vector<int> arr;
-		int n, capacity;
-
-		void insert(int key);
-		void del(int key);
-		int left(int i);
-		int right(int i);
-		int parent(int i);
-		int getRoot();
-		void heapify(int i);
-	};
-	
 };

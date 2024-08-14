@@ -16,7 +16,6 @@ HashState::~HashState()
 	delete this->DoButton;
 
 	// Text Box
-	delete this->InputManuallyValue;
 	delete this->InputRandomValue;
 	delete this->EnterTheValue;
 
@@ -74,35 +73,29 @@ void HashState::initGUI()
 	list.push_back("Size");
 
 	this->OperationButton = new gui::DropdownList(1055, 100, 172, 50, &this->fonts["LexendDeca-Bold"], list,
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Create Type Button
 	std::vector<std::string> typelist;
-	typelist.push_back("Manually");
 	typelist.push_back("Random");
 	typelist.push_back("File");
 
 	this->CreateType = new gui::DropdownList(1055, 155, 350, 50, &this->fonts["LexendDeca-Bold"], typelist,
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Do Button
 
 	this->DoButton = new gui::Button(1232, 100, 172, 50, "DO", &this->fonts["LexendDeca-Bold"],
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Input File Button
 
 	this->InputFileButton = new gui::Button(1055, 210, 350, 50, "Input File", &this->fonts["LexendDeca-Bold"],
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
-
-	// Init Manually Input Value Box
-
-	this->InputManuallyValue = new gui::TextBox(1055, 210, 350, 50, &this->fonts["LexendDeca-Regular"],
-		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Random Number of Val Box
 
@@ -123,8 +116,8 @@ void HashState::initText()
 	this->EnterTheVal->setPosition(sf::Vector2f(1060, 160));
 
 	if (DarkMode) {
-		this->NumberOfVal->setFillColor(sf::Color(205, 214, 255));
-		this->EnterTheVal->setFillColor(sf::Color(205, 214, 255));
+		this->NumberOfVal->setFillColor(LightBlue);
+		this->EnterTheVal->setFillColor(LightBlue);
 	}
 	else {
 		this->NumberOfVal->setFillColor(sf::Color(49, 53, 110));
@@ -146,8 +139,7 @@ void HashState::updateOperationState()
 		this->operationState = Create;
 
 		std::string CrState = this->CreateType->getActiveEle();
-		if (CrState == "Manually") this->createState = Manually;
-		else if (CrState == "Random") this->createState = Random;
+		if (CrState == "Random") this->createState = Random;
 		else if (CrState == "File") this->createState = File;
 	}
 	else if (OpeState == "Insert") this->operationState = Insert;
@@ -165,14 +157,6 @@ void HashState::update(const float& dt) {
 	this->updateOperationState();
 	if (this->operationState == Create) {
 		this->CreateType->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
-		if (this->createState == Manually) {
-			sf::Event evnt;
-			while (this->window->pollEvent(evnt)) {
-				if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
-					this->InputManuallyValue->update({ (float)this->MousePos.x, (float)this->MousePos.y }, evnt);
-				if (evnt.type == sf::Event::Closed) this->window->close();
-			}
-		}
 		if (this->createState == Random) {
 			sf::Event evnt;
 			while (this->window->pollEvent(evnt)) {
@@ -182,7 +166,7 @@ void HashState::update(const float& dt) {
 			}
 		}
 		if (this->createState == File) {
-			this->InputFileButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
+			this->InputFileButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 			if (this->InputFileButton->isPressed()) {
 				std::string currentDir = getCurrentWorkingDirectory();
 				this->FileName = OpenFileDialog();
@@ -204,7 +188,7 @@ void HashState::update(const float& dt) {
 			if (evnt.type == sf::Event::Closed) this->window->close();
 		}
 	}
-	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
+	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 }
 
 void HashState::render(sf::RenderTarget* target)
@@ -212,9 +196,6 @@ void HashState::render(sf::RenderTarget* target)
 	if (!target) target = this->window;
 	target->draw(this->BackGroundSprite);
 	this->BackButton->render(*target);
-	if (this->operationState == Create && this->createState == Manually) {
-		this->InputManuallyValue->render(*target);
-	}
 	if (this->operationState == Create && this->createState == Random) {
 		target->draw(*this->NumberOfVal);
 		this->InputRandomValue->render(*target);

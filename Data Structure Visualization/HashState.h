@@ -6,7 +6,7 @@ class HashState : public State
 {
 
 enum OperationState{Create = 0, Insert, Delete, GetTop, Size};
-enum CreateState{Manually = 0, Random, File};
+enum CreateState{Random = 0, File};
 private:
 	sf::Texture BackGroundTexture;
 	sf::Sprite BackGroundSprite;
@@ -22,7 +22,6 @@ private:
 	gui::DropdownList* OperationButton;
 	gui::DropdownList* CreateType;
 
-	gui::TextBox* InputManuallyValue;
 	gui::TextBox* InputRandomValue;
 	gui::TextBox* EnterTheValue;
 

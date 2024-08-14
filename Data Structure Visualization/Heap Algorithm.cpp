@@ -1,6 +1,6 @@
-#include "HeapState.h"
+#include "HeapGraph.h"
 
-void HeapState::Heap::insert(int key)
+void Heap::insert(int key)
 {
 	if (this->capacity == this->n) return;
 	int i = this->n;
@@ -12,36 +12,37 @@ void HeapState::Heap::insert(int key)
 	}
 }
 
-void HeapState::Heap::del(int key)
+bool Heap::del(int key)
 {
 	int i = 0;
 	for (i; i < n; i++) {
 		if (this->arr[i] == key) break;
 	}
-	if (i == n) return;
+	if (i == n) return false;
 	std::swap(this->arr[i], this->arr[n - 1]);
-	this->arr.pop_back();
+	this->arr.pop_back(); n--;
 	this->heapify(i);
+	return true;
 }
 
-int HeapState::Heap::left(int i)
+int Heap::left(int i)
 {
-	if (2 * i << n) return 2 * i;
+	if (2 * i + 1 < n) return 2 * i + 1;
 	else return -1;
 }
 
-int HeapState::Heap::right(int i)
+int Heap::right(int i)
 {
-	if (2 * i + 1 << n) return 2 * i + 1;
+	if (2 * i + 2 < n) return 2 * i + 2;
 	else return -1;
 }
 
-int HeapState::Heap::parent(int i)
+int Heap::parent(int i)
 {
 	return (i - 1) / 2;
 }
 
-int HeapState::Heap::getRoot()
+int Heap::getRoot()
 {
 	if (this->n == 0) return -1;
 	int root = this->arr[0];
@@ -53,16 +54,21 @@ int HeapState::Heap::getRoot()
 	return root;
 }
 
-void HeapState::Heap::heapify(int i)
+void Heap::heapify(int i)
 {
 	while (i < this->n) {
 		int largest = i;
-		if (this->left(i) < this->n && this->arr[this->left(i)] > this->arr[largest])
+		if (this->left(i) != -1 && this->arr[this->left(i)] > this->arr[largest])
 			largest = this->left(i);
-		if (this->right(i) < this->n && this->arr[this->right(i)] > this->arr[largest])
+		if (this->right(i) != -1 && this->arr[this->right(i)] > this->arr[largest])
 			largest = this->right(i);
 		if (largest == i) break;
 		std::swap(this->arr[i], this->arr[largest]);
 		i = largest;
 	}
+}
+
+void Heap::makeHeap()
+{
+	for (int i = n - 2 / 2; i >= 0; i--) heapify(i);
 }

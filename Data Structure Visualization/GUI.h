@@ -15,6 +15,9 @@ namespace gui
 	private:
 		short unsigned buttonState;
 
+		float keyTime = 0.f;
+		float keyTimeMax = 1.f;
+
 		sf::RectangleShape button;
 		sf::Font* font;
 		sf::Text text;
@@ -46,7 +49,9 @@ namespace gui
 		void setIdleColor(sf::Color idleColor);
 		void setborderColor(sf::Color borderColor);
 	public:
-		void update(const sf::Vector2f mousePos, bool DarkMode);
+		const bool getKeyTime();
+		void updateKeyTime(const float dt);
+		void update(const sf::Vector2f mousePos, const float dt, bool DarkMode);
 		void render(sf::RenderTarget& target);
 	public:
 		bool isMouseOver(sf::RenderWindow& window);
@@ -121,7 +126,8 @@ namespace gui
 	private:
 		void deleteLastchar();
 		void input(int charTyped);
-
+	public:
+		int getInput();
 	public:	
 		TextBox(float x, float y, float width, float height, sf::Font* font, int outlineThickness, 
 			sf::Color outlineColor, sf::Color boxColor, sf::Color textColor, sf::Color cursorColor);

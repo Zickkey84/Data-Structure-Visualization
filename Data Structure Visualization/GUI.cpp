@@ -16,7 +16,7 @@ gui::Button::Button(float x, float y, float width, float height,
 	this->text.setString(t);
 	this->text.setFillColor(textColor);
 	this->text.setCharacterSize(textsize);
-
+	
 	// Set position for text
 	this->text.setOrigin({ round(this->text.getLocalBounds().width / 2.0f), round(this->text.getLocalBounds().height / 2.0f) });
 	float xPos = (x + width / 2.0f);
@@ -83,14 +83,30 @@ void gui::Button::setborderColor(sf::Color borderColor)
 	this->borderColor = borderColor;
 }
 
-void gui::Button::update(const sf::Vector2f mousePos, bool DarkMode)
+const bool gui::Button::getKeyTime()
 {
+	if (this->keyTime >= this->keyTimeMax) {
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
+}
+
+void gui::Button::updateKeyTime(const float dt)
+{
+	if (this->keyTime < this->keyTimeMax) this->keyTime += 10.f * dt;
+
+}
+
+void gui::Button::update(const sf::Vector2f mousePos, const float dt, bool DarkMode)
+{
+	this->updateKeyTime(dt);
 	this->buttonState = BTN_IDLE;
 	if (this->button.getGlobalBounds().contains(mousePos)) 
 	{
 		this->buttonState = BTN_HOVER;
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeyTime())
 		{
 			this->buttonState = BTN_PRESSED;
 		}
@@ -279,7 +295,7 @@ const std::string gui::DropdownList::getActiveEle()
 void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt, bool DarkMode)
 {
 	this->updateKeyTime(dt);
-	this->activeEle->update(mousePos, DarkMode);
+	this->activeEle->update(mousePos, dt, DarkMode);
 	if (activeEle->isPressed() && this->getKeyTime()) {
 		this->isShowed = !this->isShowed;
 	}
@@ -291,7 +307,7 @@ void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt, boo
 		this->OC_Arrow.setPoint(2, sf::Vector2f(this->activeEle->getPosition().x + round(this->activeEle->getBounds().width * 0.96666f),
 			this->activeEle->getPosition().y + round(this->activeEle->getBounds().height * 0.6f)));
 		for (auto& it : this->list) {
-			it->update(mousePos, DarkMode);
+			it->update(mousePos, dt, DarkMode);
 			if (it->isPressed() && this->getKeyTime()) {
 				sf::Text temp = it->getText();
 				it->setText(this->activeEle->getText());
@@ -389,4 +405,16 @@ void gui::TextBox::render(sf::RenderTarget& target) {
 	if(this->isSelected) target.draw(this->Cursor);
 	target.draw(this->Textbox);
 }
+
+int gui::TextBox::getInput()
+{
+	std::string str = this->text.str(); 
+	if (str.length() > 0) {
+		int inputNum = std::stoi(str);
+		return inputNum;
+	}
+	else return 0;
+}
+
+
 

@@ -76,8 +76,8 @@ void Tree234State::initGUI()
 	list.push_back("Size");
 
 	this->OperationButton = new gui::DropdownList(1055, 100, 172, 50, &this->fonts["LexendDeca-Bold"], list,
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Create Type Button
 	std::vector<std::string> typelist;
@@ -86,20 +86,20 @@ void Tree234State::initGUI()
 	typelist.push_back("File");
 
 	this->CreateType = new gui::DropdownList(1055, 155, 350, 50, &this->fonts["LexendDeca-Bold"], typelist,
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Do Button
 
 	this->DoButton = new gui::Button(1232, 100, 172, 50, "DO", &this->fonts["LexendDeca-Bold"],
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Input File Button
 
 	this->InputFileButton = new gui::Button(1055, 210, 350, 50, "Input File", &this->fonts["LexendDeca-Bold"],
-		sf::Color(49, 53, 110), 22, sf::Color(205, 214, 255), sf::Color(49, 53, 110), 1, sf::Color(0, 71, 255), sf::Color(0, 10, 246),
-		sf::Color(205, 214, 255), sf::Color(49, 53, 110), sf::Color(205, 214, 255));
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
 	// Init Manually Input Value Box
 
@@ -126,8 +126,8 @@ void Tree234State::initText()
 	this->EnterTheVal->setPosition(sf::Vector2f(1060, 160));
 
 	if (DarkMode) {
-		this->NumberOfVal->setFillColor(sf::Color(205, 214, 255));
-		this->EnterTheVal->setFillColor(sf::Color(205, 214, 255));
+		this->NumberOfVal->setFillColor(LightBlue);
+		this->EnterTheVal->setFillColor(LightBlue);
 	}
 	else {
 		this->NumberOfVal->setFillColor(sf::Color(49, 53, 110));
@@ -185,7 +185,7 @@ void Tree234State::update(const float& dt) {
 			}
 		}
 		if (this->createState == File) {
-			this->InputFileButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
+			this->InputFileButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 			if (this->InputFileButton->isPressed()) {
 				std::string currentDir = getCurrentWorkingDirectory();
 				this->FileName = OpenFileDialog();
@@ -207,7 +207,7 @@ void Tree234State::update(const float& dt) {
 			if (evnt.type == sf::Event::Closed) this->window->close();
 		}
 	}
-	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, this->DarkMode);
+	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 }
 
 void Tree234State::render(sf::RenderTarget* target)

@@ -145,6 +145,8 @@
   <ItemGroup>
     <ClCompile Include="234TreeState.cpp" />
     <ClCompile Include="AVLState.cpp" />
+    <ClCompile Include="CodeHolder.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="GraphState.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Data Structure Visualization.cpp">
@@ -153,26 +155,37 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Hash Algorithm.cpp" />
+    <ClCompile Include="HashGraph.cpp" />
+    <ClCompile Include="HashNode.cpp" />
     <ClCompile Include="HashState.cpp" />
     <ClCompile Include="Heap Algorithm.cpp" />
+    <ClCompile Include="HeapGraph.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="HeapState.cpp" />
     <ClCompile Include="Miscellaneous.h" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="TreeNode.cpp" />
     <ClCompile Include="TrieState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="234TreeState.h" />
     <ClInclude Include="AVLState.h" />
+    <ClInclude Include="CodeHolder.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="GraphState.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="HashGraph.h" />
+    <ClInclude Include="HashNode.h" />
     <ClInclude Include="HashState.h" />
+    <ClInclude Include="HeapGraph.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="HeapState.h" />
     <ClInclude Include="OpenFileDialog.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="TreeNode.h" />
     <ClInclude Include="TrieState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
