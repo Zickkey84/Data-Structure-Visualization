@@ -296,6 +296,9 @@ void gui::DropdownList::update(const sf::Vector2f& mousePos, const float dt, boo
 {
 	this->updateKeyTime(dt);
 	this->activeEle->update(mousePos, dt, DarkMode);
+	if (DarkMode) this->OC_Arrow.setFillColor(sf::Color(205, 214, 255));
+	else this->OC_Arrow.setFillColor(sf::Color(49, 53, 110));
+
 	if (activeEle->isPressed() && this->getKeyTime()) {
 		this->isShowed = !this->isShowed;
 	}
@@ -414,6 +417,11 @@ int gui::TextBox::getInput()
 		return inputNum;
 	}
 	else return 0;
+}
+
+std::string gui::TextBox::getString()
+{
+	return this->Textbox.getString();
 }
 
 

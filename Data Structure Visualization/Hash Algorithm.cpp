@@ -17,15 +17,13 @@ bool Hash::Insert(int x)
 bool Hash::Delete(int x)
 {
 	int index = hashCode(x);
-	while (this->hashArr[index] != -1) {
+	while (this->hashArr[index] != x) {
 		index++;
 		if (index == this->size) index = 0;
-		if (this->hashArr[index] == x) {
-			this->hashArr[index] = -1;
-			return true;
-		}
+		if (index == hashCode(x)) return false;
 	}
-	return false;
+	this->hashArr[index] = -1;
+	return true;
 }
 
 int Hash::Search(int x)

@@ -127,6 +127,7 @@ namespace gui
 		void deleteLastchar();
 		void input(int charTyped);
 	public:
+		std::string getString();
 		int getInput();
 	public:	
 		TextBox(float x, float y, float width, float height, sf::Font* font, int outlineThickness, 

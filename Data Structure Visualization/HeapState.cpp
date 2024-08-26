@@ -14,6 +14,7 @@ HeapState::~HeapState()
 	// Button
 	delete this->BackButton;
 	delete this->OperationButton;
+	delete this->CreateType;
 	delete this->DoButton;
 	delete this->InputFileButton;
 	// Text Box

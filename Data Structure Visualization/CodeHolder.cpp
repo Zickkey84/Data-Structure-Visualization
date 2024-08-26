@@ -20,3 +20,26 @@ std::string GETTOP_HEAP = "if (number_of_value == 0)\n    return -1;\n" +
 						  "return top;\n";
 
 std::string SIZE_HEAP = "return number_of_value;";
+
+std::string INSERT_HASH =
+			  std::string("while (!hashTable[index].empty()) {\n") +
+						  "		index++;\n" +
+						  "		if (index == hashTableSize) \n			index = 0;\n" +
+						  "		if (index == hashCode(x))   \n			return false;\n}\n"	
+						  "hashTable[index] = x;\n" +
+						  "return true;\n ";
+
+std::string DELETE_HASH = 
+			  std::string("while (hashTable[index] != x) {\n") +
+						  "		index++;\n" +
+						  "		if (index == hashTableSize)\n			index = 0;\n" +
+						  "		if (index == hashCode(x))  \n			return false;\n}\n" +
+						  "delete hashTable[index];\n" +
+						  "return true;\n";
+
+std::string SEARCH_HASH =
+			  std::string("while (this->hashArr[index] != x) {\n") +
+						  "		index++;\n" +
+						  "		if (index == this->size) \n			index = 0;\n" +
+						  "		if (index == hashCode(x))\n			return NULL;\n}\n" +
+						  "return index;";

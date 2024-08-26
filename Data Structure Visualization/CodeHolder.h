@@ -5,3 +5,7 @@ extern std::string INSERT_HEAP;
 extern std::string DELETE_HEAP;
 extern std::string GETTOP_HEAP;
 extern std::string SIZE_HEAP;
+
+extern std::string INSERT_HASH;
+extern std::string DELETE_HASH;
+extern std::string SEARCH_HASH;

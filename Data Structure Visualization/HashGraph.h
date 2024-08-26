@@ -8,7 +8,7 @@
 
 struct Hash
 {
-	int size = 0, capacity = 40;
+	int size = 0, capacity = 50;
 	std::vector<int> hashArr;
 	
 	int hashCode(int x);
@@ -19,17 +19,21 @@ struct Hash
 
 class HashGraph
 {
-private:
+public:
 	sf::Font* font;
 	float length; int thickness;
 	sf::Color fillColor, borderColor, textColor;
-	std::vector<HashNode*> Nodes;
 	Hash* hash;
 	sf::Vector2f startPosition;
+public:
+	std::vector<HashNode*> Nodes;
+
 
 public:
 	HashGraph(sf::Vector2f startPosition, sf::Font* font, Hash* hash, colorTheme theme, float radius, int thickness);
 	~HashGraph();
+	void resetAnimation();
+	void InsertAnimation(sf::RenderTarget& target, int value);
 	void update();
 	void render(sf::RenderTarget& target);
 };
