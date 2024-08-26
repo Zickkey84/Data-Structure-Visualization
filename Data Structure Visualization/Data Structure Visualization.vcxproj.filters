@@ -78,6 +78,18 @@
     <ClCompile Include="State.cpp">
       <Filter>Header Files\State</Filter>
     </ClCompile>
+    <ClCompile Include="Heap Algorithm.cpp">
+      <Filter>Header Files\Data Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Miscellaneous.h">
+      <Filter>Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Heap Visualize.cpp">
+      <Filter>Header Files\Data Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeNode.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
     <ClCompile Include="TrieState.cpp">
       <Filter>Header Files\State</Filter>
     </ClCompile>
@@ -90,8 +102,8 @@
     <ClCompile Include="HashNode.cpp">
       <Filter>Header Files\Data Structure\Hash Table</Filter>
     </ClCompile>
-    <ClCompile Include="HeapState.cpp">
-      <Filter>Header Files\Data Structure\Heap</Filter>
+    <ClCompile Include="Miscellaneous.h">
+      <Filter>Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="HeapState.h">
       <Filter>Header Files\Data Structure\Heap</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeNode.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapGraph.h">
+      <Filter>Header Files\Data Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeHolder.h">
+      <Filter>Tool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
