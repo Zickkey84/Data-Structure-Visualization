@@ -144,7 +144,7 @@ void TrieState::initText()
 	this->EnterTheVal->setPosition(sf::Vector2f(1060, 160));
 
 	this->noti = new sf::Text("", this->fonts["LexendDeca-Regular"], 20);
-	this->noti->setPosition(sf::Vector2f(1150, 490));
+	this->noti->setPosition(sf::Vector2f(1130, 490));
 
 	this->code = new sf::Text("", this->fonts["LexendDeca-Regular"], 18);
 	this->code->setPosition(sf::Vector2f(1070, 555));
