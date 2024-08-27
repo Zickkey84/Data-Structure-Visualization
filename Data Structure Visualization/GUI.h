@@ -138,6 +138,28 @@ namespace gui
 		void render(sf::RenderTarget &target);
 	};
 
+	class TextBox2 {
+	private:
+		sf::RectangleShape Box;
+		sf::RectangleShape Cursor;
+		sf::Text Textbox;
+		std::ostringstream text;
+
+		bool isSelected = false;
+
+	private:
+		void deleteLastchar();
+		void input(int charTyped);
+	public:
+		std::string getString();
+		int getInput();
+	public:
+		TextBox2(float x, float y, float width, float height, sf::Font* font, int outlineThickness,
+			sf::Color outlineColor, sf::Color boxColor, sf::Color textColor, sf::Color cursorColor);
+		void update(const sf::Vector2f& mousePos, sf::Event& evnt);
+		void render(sf::RenderTarget& target);
+	};
+
 	class MatrixBox {
 	private:
 		std::vector<TextBox*> ListBox;

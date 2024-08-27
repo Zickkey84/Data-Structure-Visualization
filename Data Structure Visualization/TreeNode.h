@@ -14,17 +14,26 @@ private:
 	sf::Text text, textVariable;
 	sf::Font *font;
     std::set <std::string> variableList;
+
+public:
+    std::map <int, std::string> edges;
+    bool isWord = false;
+    std::string val;
 	int value;
+
 public:
 	TreeNode(sf::Vector2f position, float radius, int borderThickness,
         sf::Color vertexColor, sf::Color textColor, int value, sf::Font *font);
-   
+    TreeNode(sf::Vector2f position, float radius, int borderThickness,
+        sf::Color vertexColor, sf::Color textColor, std::string val, sf::Font* font); 
 public:
     // Getters
     sf::Vector2f getVertexPosition();
     std::vector <std::string> getVariables();
     int getValue();
     std::string getVariableString();
+    bool getIsWord();
+    sf::Vector2f getPosition();
 
     // Setters
     void setPosition(sf::Vector2f newPosition);
@@ -34,7 +43,11 @@ public:
     void setValue(int newValue);
     void setLeftChild(int newLeftChild);
     void setRightChild(int newRightChild);
-
+    void setValue(std::string newValue);
+    void insertEdge(int id, std::string weight);
+    void deleteEdge(int id);
+    void setIsWord(bool newState);
+    void setHighlight(sf::Color newColor, int thickness);
 public:
     void insertVariable(std::string variable);
     void deleteVariable(std::string variable);

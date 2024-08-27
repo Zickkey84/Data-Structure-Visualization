@@ -55,10 +55,37 @@ std::string MST_GRAPH = "for (int cnt = 0; cnt < V - 1; cnt++) {\n" +
 				        "       }\n" +
 						"   }\n}";
 
-extern std::string CC_GRAPH = "for (int v = 0; v < V; v++)\n" +
+std::string CC_GRAPH = "for (int v = 0; v < V; v++)\n" +
 			std::string("   visited[v] = false;\n") + 
 						"for (int v = 0; v < V; v++) {\n" +
 						"   if (visited[v] == false) {\n" +
 						"      DFSUtil(v, visited);\n" +
 						"      count += 1;\n   }\n}\n" +
 						"return count;";
+
+std::string INSERT_TRIE = "TrieNode* temp = root;\n" +
+			  std::string("for (int i = 0; word[i] != '\\0'; i++) {\n") + 
+					      "  int idx = word[i] - 'a';\n" +
+						  "  if (temp->children[idx] == NULL)\n" +
+						  "    temp->children[idx] = makenode(word[i]);\n" +
+						  "  temp = temp->children[idx];\n}\n" +
+						  "temp->is_leaf = 1;";
+
+std::string DELETE_TRIE = "If root is NULL or word is empty:\n" +
+			  std::string("   Return root\n") + 
+					      "If not a leaf node :\n" +
+						  "   Return root\n" +
+						  "Find the longest prefix that is not `word`\n" +
+						  "Traverse the prefix :\n" +
+						  "   Move down to the corresponding child node\n" +
+						  "Delete nodes corresponding to `word`\n" +
+						  "   Return root\n";
+
+std::string SEARCH_TRIE = "TrieNode* temp = root;\n" +
+			  std::string("for (int i = 0; word[i] != '\\0'; i++) {\n") + 
+					      "	  int position = word[i] - 'a';\n" +
+						  "   if (temp->children[position] == NULL)\n" +
+						  "      return false;\n" +
+						  "   temp = temp->children[position];\n}\n" +
+						  "if (temp != NULL && temp->is_leaf == 1)\n" +
+						  "   return true;\nreturn false;";

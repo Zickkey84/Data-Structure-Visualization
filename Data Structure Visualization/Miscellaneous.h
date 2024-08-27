@@ -18,6 +18,23 @@ inline float length(sf::Vector2f v) { return round(sqrt(v.x * v.x + v.y * v.y));
 
 inline sf::Vector2f normalize(sf::Vector2f v) {
     float len = sqrt(v.x * v.x + v.y * v.y);
-    return { round(v.x / len), round(v.y / len) };
+    return { v.x / len, v.y / len };
 }
 
+inline std::string charToString(char a) {
+    std::string res;
+    res.push_back(a);
+    return res;
+}
+
+inline void generateRandomString(int x, std::vector<std::string>& v) {
+    while (x--) {
+        int k = rand() % 6 + 1;
+        std::string characters = "abcdefghijklmnopqrstuvwxyz";
+        std::string randomString;
+        for (int i = 0; i < k; i++) {
+            randomString += characters[std::rand() % characters.size()];
+        }
+        v.push_back(randomString);
+    }
+}

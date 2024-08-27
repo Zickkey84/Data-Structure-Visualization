@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Data Structure\Graph">
       <UniqueIdentifier>{cf2b309a-cc80-4b95-bf0f-b6e2de0b35cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Data Structure\Trie">
+      <UniqueIdentifier>{2ed5f7e8-e639-428e-a566-5b5f278e16e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -84,9 +87,6 @@
     <ClCompile Include="TreeNode.cpp">
       <Filter>Tool</Filter>
     </ClCompile>
-    <ClCompile Include="TrieState.cpp">
-      <Filter>Header Files\State</Filter>
-    </ClCompile>
     <ClCompile Include="Hash Algorithm.cpp">
       <Filter>Header Files\Data Structure\Hash Table</Filter>
     </ClCompile>
@@ -111,6 +111,12 @@
     <ClCompile Include="GGraph.cpp">
       <Filter>Header Files\Data Structure\Graph</Filter>
     </ClCompile>
+    <ClCompile Include="TrieState.cpp">
+      <Filter>Header Files\Data Structure\Trie</Filter>
+    </ClCompile>
+    <ClCompile Include="TrieGraph.cpp">
+      <Filter>Header Files\Data Structure\Trie</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -129,9 +135,6 @@
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="AVLState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="TrieState.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="OpenFileDialog.h">
@@ -178,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="GGraph.h">
       <Filter>Header Files\Data Structure\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="TrieState.h">
+      <Filter>Header Files\Data Structure\Trie</Filter>
+    </ClInclude>
+    <ClInclude Include="TrieGraph.h">
+      <Filter>Header Files\Data Structure\Trie</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

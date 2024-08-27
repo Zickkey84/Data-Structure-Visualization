@@ -424,6 +424,89 @@ std::string gui::TextBox::getString()
 	return this->Textbox.getString();
 }
 
+// TEXT BOX 2 --------------------------------------
+
+gui::TextBox2::TextBox2(float x, float y, float width, float height, sf::Font* font, int outlineThickness,
+	sf::Color outlineColor, sf::Color boxColor, sf::Color textColor, sf::Color cursorColor)
+{
+	this->Textbox.setString("");
+	this->Textbox.setFont(*font);
+	this->Textbox.setCharacterSize(round(height * 0.6));
+	this->Textbox.setPosition({ round(x + width * 0.05f),round(y + height * 0.055f) });
+	this->Textbox.setFillColor(textColor);
+
+	this->Box.setPosition(sf::Vector2f(x, y));
+	this->Box.setSize(sf::Vector2f(width, height));
+	this->Box.setOutlineThickness(outlineThickness);
+	this->Box.setFillColor(boxColor);
+	this->Box.setOutlineColor(outlineColor);
+
+	this->Cursor.setSize(sf::Vector2f(width * 0.015, height * 0.8));
+	this->Cursor.setPosition(sf::Vector2f(x + round(width * 0.07), y + round(height * 0.055)));
+	this->Cursor.setFillColor(cursorColor);
+
+}
+
+void gui::TextBox2::deleteLastchar() {
+	std::string t = this->text.str();
+	std::string newT = "";
+	for (int i = 0; i < t.length() - 1; i++) newT += t[i];
+	this->text.str("");
+	this->text << newT;
+	this->Textbox.setString(this->text.str());
+}
+
+void gui::TextBox2::input(int charTyped) {
+	if (charTyped != 8) {
+		this->text << static_cast<char>(charTyped);
+	}
+	else {
+		if (text.str().length() > 0) deleteLastchar();
+	}
+	this->Textbox.setString(this->text.str());
+}
+
+void gui::TextBox2::update(const sf::Vector2f& mousePos, sf::Event& evnt) {
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (this->Box.getGlobalBounds().contains(mousePos)) {
+			this->isSelected = true;
+		}
+		else this->isSelected = false;
+	}
+
+	if (isSelected) {
+		int charTyped = evnt.text.unicode;
+		if (charTyped == 8 || charTyped == 32 || charTyped >= 97 && charTyped <= 122) {
+			input(charTyped);
+			this->Cursor.setPosition(sf::Vector2f(this->Box.getPosition().x + round(this->Box.getSize().x * 0.07) + this->Textbox.getLocalBounds().width,
+				this->Box.getPosition().y + round(this->Box.getSize().y * 0.055)));
+		}
+	}
+}
+
+void gui::TextBox2::render(sf::RenderTarget& target) {
+	target.draw(this->Box);
+	if (this->isSelected) target.draw(this->Cursor);
+	target.draw(this->Textbox);
+}
+
+int gui::TextBox2::getInput()
+{
+	std::string str = this->text.str();
+	if (str.length() > 0) {
+		int inputNum = std::stoi(str);
+		return inputNum;
+	}
+	else return 0;
+}
+
+std::string gui::TextBox2::getString()
+{
+	return this->Textbox.getString();
+}
+
+// MATRIX BOX ---------------------------------------
 gui::MatrixBox::MatrixBox(float x, float y, float size, sf::Font* font, colorTheme theme)
 {
 	for (int i = 0; i <= 10; i++) {

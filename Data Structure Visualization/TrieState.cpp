@@ -6,6 +6,7 @@ TrieState::TrieState(sf::RenderWindow* window, std::stack<State*>* states, bool 
 	this->initFont();
 	this->initGUI();
 	this->initText();
+	this->initTrieGraph();
 }
 
 TrieState::~TrieState()
@@ -14,16 +15,19 @@ TrieState::~TrieState()
 	delete this->BackButton;
 	delete this->OperationButton;
 	delete this->DoButton;
+	delete this->Speed;
 
 	// Text Box
-	delete this->InputManuallyValue;
 	delete this->InputRandomValue;
 	delete this->EnterTheValue;
 
 	// Text
 	delete this->EnterTheVal;
 	delete this->NumberOfVal;
+	delete this->noti;
+	delete this->code;
 
+	delete this->trieGraph;
 }
 
 void TrieState::checkForEnd()
@@ -72,8 +76,7 @@ void TrieState::initGUI()
 	list.push_back("Create");
 	list.push_back("Insert");
 	list.push_back("Delete");
-	list.push_back("Get Top");
-	list.push_back("Size");
+	list.push_back("Search");
 
 	this->OperationButton = new gui::DropdownList(1055, 100, 172, 50, &this->fonts["LexendDeca-Bold"], list,
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
@@ -81,11 +84,22 @@ void TrieState::initGUI()
 
 	// Init Create Type Button
 	std::vector<std::string> typelist;
-	typelist.push_back("Manually");
 	typelist.push_back("Random");
 	typelist.push_back("File");
 
 	this->CreateType = new gui::DropdownList(1055, 155, 350, 50, &this->fonts["LexendDeca-Bold"], typelist,
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
+
+	// Init Speed Button
+	std::vector<std::string> speedlist;
+	speedlist.push_back("1x");
+	speedlist.push_back("0.5x");
+	speedlist.push_back("0.75x");
+	speedlist.push_back("1.5x");
+	speedlist.push_back("2x");
+
+	this->Speed = new gui::DropdownList(1055, 215, 350, 50, &this->fonts["LexendDeca-Bold"], speedlist,
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
 		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
@@ -101,38 +115,57 @@ void TrieState::initGUI()
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
 		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
-	// Init Manually Input Value Box
-
-	this->InputManuallyValue = new gui::TextBox(1055, 210, 350, 50, &this->fonts["LexendDeca-Regular"],
-		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
-
 	// Init Random Number of Val Box
 
 	this->InputRandomValue = new gui::TextBox(1327, 210, 75, 50, &this->fonts["LexendDeca-Regular"],
 		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
 
 	// Init Enter The Value Box
-	this->EnterTheValue = new gui::TextBox(1322, 155, 75, 50, &this->fonts["LexendDeca-Regular"],
+	this->EnterTheValue = new gui::TextBox2(1280, 155, 120, 50, &this->fonts["LexendDeca-Regular"],
 		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
+
+	// Init Arrow
+	this->arrow.setPointCount(3);
+	this->arrow.setPoint(0, sf::Vector2f(0, 0));
+	this->arrow.setPoint(1, sf::Vector2f(0, 15));
+	this->arrow.setPoint(2, sf::Vector2f(-15, 8));
+	if (DarkMode) this->arrow.setFillColor(LightBlue);
+	else this->arrow.setFillColor(DarkBlue);
+	this->arrow.setOrigin(sf::Vector2f(-15, 8));
 }
 
 
 void TrieState::initText()
 {
-	this->NumberOfVal = new sf::Text("Number Of Value (Max 40): ", this->fonts["LexendDeca-Regular"], 20);
+	this->NumberOfVal = new sf::Text("Number of String (Max 20): ", this->fonts["LexendDeca-Regular"], 20);
 	this->NumberOfVal->setPosition(sf::Vector2f(1055, 220));
 
-	this->EnterTheVal = new sf::Text("Enter The Value: ", this->fonts["LexendDeca-Regular"], 30);
+	this->EnterTheVal = new sf::Text("Enter The String:\nMax length is 6", this->fonts["LexendDeca-Regular"], 20);
 	this->EnterTheVal->setPosition(sf::Vector2f(1060, 160));
+
+	this->noti = new sf::Text("", this->fonts["LexendDeca-Regular"], 20);
+	this->noti->setPosition(sf::Vector2f(1150, 490));
+
+	this->code = new sf::Text("", this->fonts["LexendDeca-Regular"], 18);
+	this->code->setPosition(sf::Vector2f(1070, 555));
 
 	if (DarkMode) {
 		this->NumberOfVal->setFillColor(LightBlue);
 		this->EnterTheVal->setFillColor(LightBlue);
+		this->noti->setFillColor(LightBlue);
+		this->code->setFillColor(LightBlue);
 	}
 	else {
 		this->NumberOfVal->setFillColor(sf::Color(49, 53, 110));
 		this->EnterTheVal->setFillColor(sf::Color(49, 53, 110));
+		this->noti->setFillColor(DarkBlue);
+		this->code->setFillColor(DarkBlue);
 	}
+}
+
+void TrieState::initTrieGraph()
+{
+	this->trieGraph = new TrieGraph(sf::Vector2f(600, 160), 22.f, 2.f, &this->fonts["LexendDeca-Regular"], colorTheme(this->DarkMode), 20);
 }
 
 
@@ -149,15 +182,49 @@ void TrieState::updateOperationState()
 		this->operationState = Create;
 
 		std::string CrState = this->CreateType->getActiveEle();
-		if (CrState == "Manually") this->createState = Manually;
-		else if (CrState == "Random") this->createState = Random;
+		if (CrState == "Random") this->createState = Random;
 		else if (CrState == "File") this->createState = File;
 	}
-	else if (OpeState == "Insert") this->operationState = Insert;
-	else if (OpeState == "Delete") this->operationState = Delete;
-	else if (OpeState == "Get Top") this->operationState = GetTop;
-	else if (OpeState == "Size") this->operationState = Size;
+	else if (OpeState == "Insert") {
+		this->operationState = Insert;
+		this->code->setString(INSERT_TRIE);
+		this->code->setCharacterSize(16);
+	}
+	else if (OpeState == "Delete") {
+		this->operationState = Delete;
+		this->code->setString(DELETE_TRIE);
+		this->code->setCharacterSize(15);
+	}
+	else if (OpeState == "Search") {
+		this->operationState = Search;
+		this->code->setString(SEARCH_TRIE);
+		this->code->setCharacterSize(16);
+	}
+}
 
+void TrieState::updateNoti()
+{
+	OperationState x;
+	std::string OpeState = this->OperationButton->getActiveEle();
+	if (OpeState == "Create") x = Create;
+	else if (OpeState == "Insert") x = Insert;
+	else if (OpeState == "Delete") x = Delete;
+	else if (OpeState == "Search") x = Search;
+
+	if (x != this->operationState) {
+		this->noti->setString("");
+		this->arrowState = None;
+	}
+}
+
+void TrieState::updateSpeed()
+{
+	std::string speed = this->Speed->getActiveEle();
+	if (speed == "0.5x") this->speed = 0.5f;
+	else if (speed == "0.75x") this->speed = 0.75f;
+	else if (speed == "1x") this->speed = 1.f;
+	else if (speed == "1.5x") this->speed = 1.5f;
+	else this->speed = 2.f;
 }
 
 void TrieState::update(const float& dt) {
@@ -165,17 +232,11 @@ void TrieState::update(const float& dt) {
 	this->updateKeybinds(dt);
 	this->BackButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 	this->OperationButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
+	this->updateNoti();
+	this->updateSpeed();
 	this->updateOperationState();
 	if (this->operationState == Create) {
 		this->CreateType->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
-		if (this->createState == Manually) {
-			sf::Event evnt;
-			while (this->window->pollEvent(evnt)) {
-				if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
-					this->InputManuallyValue->update({ (float)this->MousePos.x, (float)this->MousePos.y }, evnt);
-				if (evnt.type == sf::Event::Closed) this->window->close();
-			}
-		}
 		if (this->createState == Random) {
 			sf::Event evnt;
 			while (this->window->pollEvent(evnt)) {
@@ -199,7 +260,7 @@ void TrieState::update(const float& dt) {
 			}
 		}
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		sf::Event evnt;
 		while (this->window->pollEvent(evnt)) {
 			if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
@@ -207,7 +268,68 @@ void TrieState::update(const float& dt) {
 			if (evnt.type == sf::Event::Closed) this->window->close();
 		}
 	}
+	if (this->operationState == Search) this->Speed->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
+	if (this->DoButton->isPressed()) {
+		switch (this->operationState) {
+		case Create:
+		{
+			this->trieGraph->clear();
+			if (this->createState == File) {
+				std::ifstream fin;
+				fin.open(this->FileName);
+				if (fin.is_open()) {
+					std::string word;
+					while (fin >> word) {
+						this->trieGraph->insertString(word);
+					}
+					fin.close();
+				}
+				else std::cout << "Error open input file!";
+			}
+			if (this->createState == Random) {
+				int x = this->InputRandomValue->getInput();
+				if (x <= 20 && x > 0) {
+					std::vector<std::string> v;
+					std::srand(std::time(0));
+					generateRandomString(x, v);
+					for (auto it : v) this->trieGraph->insertString(it);
+				}
+			}
+			break;
+		}
+		case Insert:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				this->trieGraph->insertString(this->EnterTheValue->getString());
+				this->noti->setString(this->EnterTheValue->getString() + " was inserted");
+			}
+			break;
+		}
+		case Delete:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				if(this->trieGraph->deleteString(this->EnterTheValue->getString()))
+					this->noti->setString(this->EnterTheValue->getString() + " was deleted");
+				else this->noti->setString(this->EnterTheValue->getString() + " isn't in Trie");
+			}
+			break;
+		}
+		case Search:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				this->str = this->EnterTheValue->getString();
+			}
+			this->searching = true;
+			this->index = 0;
+			this->id = -1; this->cur = -1;
+			break;
+		}
+		default:
+			break;
+		}
+		this->trieGraph->update();
+	}
 }
 
 void TrieState::render(sf::RenderTarget* target)
@@ -215,9 +337,6 @@ void TrieState::render(sf::RenderTarget* target)
 	if (!target) target = this->window;
 	target->draw(this->BackGroundSprite);
 	this->BackButton->render(*target);
-	if (this->operationState == Create && this->createState == Manually) {
-		this->InputManuallyValue->render(*target);
-	}
 	if (this->operationState == Create && this->createState == Random) {
 		target->draw(*this->NumberOfVal);
 		this->InputRandomValue->render(*target);
@@ -228,10 +347,55 @@ void TrieState::render(sf::RenderTarget* target)
 	if (this->operationState == Create) {
 		this->CreateType->render(*target);
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		target->draw(*this->EnterTheVal);
 		this->EnterTheValue->render(*target);
 	}
+	if(this->operationState == Search) this->Speed->render(*target);
+	if (this->searching) {
+		if (index == 0) {
+			this->cur = this->trieGraph->root;
+			this->trieGraph->nodes[cur]->setHighlight(sf::Color::Red, this->trieGraph->thickness * 2);
+			this->trieGraph->nodes[cur]->render(*target);
+			sf::sleep(sf::seconds(0.75f / speed));
+			this->trieGraph->nodes[cur]->setHighlight(this->trieGraph->textColor, this->trieGraph->thickness);
+		}
+		char x = str[index];
+		index++;
+		if (this->trieGraph->findEdge(cur, charToString(x)) == -1) {
+			this->noti->setString(str + " is not found");
+			this->arrow.setPosition({ 1350,650 });
+			this->arrowState = Active;
+			this->searching = false;
+		}
+		else {
+			this->id = this->trieGraph->findEdge(cur, charToString(x));
+			this->arrow.setPosition({ 1350,675 });
+			this->arrowState = Active;
+		}
+		if (this->searching) {
+			this->cur = this->id;
+			this->trieGraph->nodes[cur]->setHighlight(sf::Color::Red, this->trieGraph->thickness * 2);
+			this->trieGraph->nodes[cur]->render(*target);
+			sf::sleep(sf::seconds(0.75f / speed));
+			this->trieGraph->nodes[cur]->setHighlight(this->trieGraph->textColor, this->trieGraph->thickness);
+			if (index == str.length() && this->trieGraph->nodes[cur]->getIsWord()) {
+				this->noti->setString(str + " is found");
+				this->arrow.setPosition({ 1350,725 });
+				this->arrowState = Active;
+				this->searching = false;
+			}
+			else if (index == str.length() && !this->trieGraph->nodes[cur]->getIsWord()) {
+				this->noti->setString(str + " is not found");
+				this->arrow.setPosition({ 1350,747 });
+				this->arrowState = Active;
+				this->searching = false;
+			}
+		}
+	}
 	this->OperationButton->render(*target);
 	this->DoButton->render(*target);
+	this->trieGraph->render(*target);
+	target->draw(*this->noti); target->draw(*this->code);
+	if (this->arrowState != None) target->draw(this->arrow);
 }

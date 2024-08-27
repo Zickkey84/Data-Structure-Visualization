@@ -12,3 +12,7 @@ extern std::string SEARCH_HASH;
 
 extern std::string MST_GRAPH;
 extern std::string CC_GRAPH;
+
+extern std::string INSERT_TRIE;
+extern std::string DELETE_TRIE;
+extern std::string SEARCH_TRIE;
