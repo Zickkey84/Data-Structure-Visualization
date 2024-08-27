@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include "HashGraph.h"
+#include "SFML/Graphics.hpp"
 
 inline std::vector<int> generateRandomArray(int n) {
     std::vector<int> randomArray;
@@ -13,6 +14,10 @@ inline std::vector<int> generateRandomArray(int n) {
     return randomArray;
 }
 
-inline Hash generateRandomHash(int x) {
+inline float length(sf::Vector2f v) { return round(sqrt(v.x * v.x + v.y * v.y)); }
 
+inline sf::Vector2f normalize(sf::Vector2f v) {
+    float len = sqrt(v.x * v.x + v.y * v.y);
+    return { round(v.x / len), round(v.y / len) };
 }
+

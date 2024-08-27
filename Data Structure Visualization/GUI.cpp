@@ -359,7 +359,7 @@ gui::TextBox::TextBox(float x, float y, float width, float height, sf::Font* fon
 	this->Box.setFillColor(boxColor);
 	this->Box.setOutlineColor(outlineColor);
 
-	this->Cursor.setSize(sf::Vector2f(round(width * 0.015), round(height * 0.8)));
+	this->Cursor.setSize(sf::Vector2f(width * 0.015, height * 0.8));
 	this->Cursor.setPosition(sf::Vector2f(x + round(width * 0.07), y + round(height * 0.055)));
 	this->Cursor.setFillColor(cursorColor);
 
@@ -422,6 +422,109 @@ int gui::TextBox::getInput()
 std::string gui::TextBox::getString()
 {
 	return this->Textbox.getString();
+}
+
+gui::MatrixBox::MatrixBox(float x, float y, float size, sf::Font* font, colorTheme theme)
+{
+	for (int i = 0; i <= 10; i++) {
+		sf::RectangleShape* temp = new sf::RectangleShape();
+		temp->setSize({ size,size });
+		temp->setFillColor(HASH::color[theme][HASH::Normal].fillColor);
+		temp->setOutlineThickness(1);
+		temp->setOutlineColor(HASH::color[theme][HASH::Normal].outlineColor);
+		temp->setPosition({ x + size * (float)i + (float)i, y });
+		firstRow.push_back(temp);
+		if (i != 0) {
+			sf::Text* text1 = new sf::Text();
+			text1->setFont(*font);
+			text1->setCharacterSize(round(size / 2));
+			text1->setString(std::to_string(i));
+			text1->setFillColor(HASH::color[theme][HASH::Normal].outlineColor);
+			text1->setOrigin({ round(text1->getGlobalBounds().width / 2), round(text1->getGlobalBounds().height / 2) });
+			text1->setPosition({ temp->getPosition().x + size / 2.f, temp->getPosition().y + size / 2.f });
+			firstRowText.push_back(text1);
+		}
+		sf::RectangleShape* temp2 = new sf::RectangleShape();
+		temp2->setSize({ size,size });
+		temp2->setFillColor(HASH::color[theme][HASH::Normal].fillColor);
+		temp2->setOutlineThickness(1);
+		temp2->setOutlineColor(HASH::color[theme][HASH::Normal].outlineColor);
+		temp2->setPosition({ x , y + size * (float)i + (float)i });
+		firstColumn.push_back(temp2);
+		if (i != 0) {
+			sf::Text* text2 = new sf::Text();
+			text2->setFont(*font);
+			text2->setCharacterSize(round(size / 2));
+			text2->setString(std::to_string(i));
+			text2->setFillColor(HASH::color[theme][HASH::Normal].outlineColor);
+			text2->setOrigin({ round(text2->getGlobalBounds().width / 2), round(text2->getGlobalBounds().height / 2) });
+			text2->setPosition({ temp2->getPosition().x + size / 2.f, temp2->getPosition().y + size / 2.f });
+			firstColumnText.push_back(text2);
+		}
+	}
+	for (int i = 1; i <= 9; i++) {
+		for (int j = i + 1; j <= 10; j++) {
+			ListBox.push_back(new TextBox(x + size * (float)j + (float)j, y + size * (float)i + (float)i, size, size, font, 1,
+				HASH::color[theme][HASH::Normal].outlineColor, HASH::color[theme][HASH::Normal].fillColor,
+				HASH::color[theme][HASH::Normal].outlineColor, HASH::color[theme][HASH::Normal].outlineColor));
+		}
+	}
+	for (int i = 1; i <= 10; i++) {
+		for (int j = 1; j <= i; j++) {
+			sf::RectangleShape* temp = new sf::RectangleShape();
+			temp->setSize({ size,size });
+			temp->setFillColor(HASH::color[theme][HASH::Normal].fillColor);
+			temp->setOutlineThickness(1);
+			temp->setOutlineColor(HASH::color[theme][HASH::Normal].outlineColor);
+			temp->setPosition({ x + size * j + j, y + size * i + i});
+			XBox.push_back(temp);
+
+			sf::Text* text = new sf::Text();
+			text->setFont(*font);
+			text->setCharacterSize(round(size / 2));
+			text->setString("X");
+			text->setFillColor(HASH::color[theme][HASH::Normal].outlineColor);
+			text->setOrigin({ round(text->getGlobalBounds().width / 2), round(text->getGlobalBounds().height / 2) });
+			text->setPosition({ temp->getPosition().x + size / 2.f, temp->getPosition().y + size / 2.f });
+			XText.push_back(text);
+		}
+	}
+}
+
+gui::MatrixBox::~MatrixBox() {
+	for (auto it : ListBox) delete it;
+	for (auto it : XBox) delete it;
+	for (auto it : firstColumn) delete it;
+	for (auto it : firstRow) delete it;
+	for (auto it : firstRowText) delete it;
+	for (auto it : firstColumnText) delete it;
+	for (auto it : XText) delete it;
+}
+
+void gui::MatrixBox::readInput(std::set<GEdge*>& edges) {
+	int index = 0;
+	for (int i = 1; i <= 9; i++) {
+		for (int j = i + 1; j <= 10; j++) {
+			edges.insert(new GEdge(i, j, ListBox[index]->getInput()));
+			index++;
+		}
+	}
+}
+void gui::MatrixBox::update(const sf::Vector2f& mousePos, sf::Event& evnt)
+{
+	for (auto it : ListBox) it->update(mousePos, evnt);
+}
+
+
+void gui::MatrixBox::render(sf::RenderTarget& target)
+{
+	for (auto it : ListBox) it->render(target);
+	for (auto it : XBox) target.draw(*it);
+	for (auto it : firstColumn) target.draw(*it);
+	for (auto it : firstRow) target.draw(*it);
+	for (auto it : firstRowText) target.draw(*it);
+	for (auto it : firstColumnText) target.draw(*it);
+	for (auto it : XText) target.draw(*it);
 }
 
 

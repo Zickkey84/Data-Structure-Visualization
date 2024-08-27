@@ -147,6 +147,7 @@
     <ClCompile Include="AVLState.cpp" />
     <ClCompile Include="CodeHolder.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="GGraph.cpp" />
     <ClCompile Include="GraphState.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Data Structure Visualization.cpp">
@@ -174,6 +175,7 @@
     <ClInclude Include="AVLState.h" />
     <ClInclude Include="CodeHolder.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="GGraph.h" />
     <ClInclude Include="GraphState.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="HashGraph.h" />

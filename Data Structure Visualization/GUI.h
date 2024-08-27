@@ -3,7 +3,9 @@
 #include <sstream>
 #include <vector>
 #include <SFML/Graphics.hpp>
-
+#include "Color.h"
+#include <set>
+#include "GGraph.h"
 enum button_states{BTN_IDLE = 0, BTN_HOVER, BTN_PRESSED};
 
 
@@ -134,6 +136,21 @@ namespace gui
 			sf::Color outlineColor, sf::Color boxColor, sf::Color textColor, sf::Color cursorColor);
 		void update(const sf::Vector2f& mousePos, sf::Event& evnt);
 		void render(sf::RenderTarget &target);
+	};
+
+	class MatrixBox {
+	private:
+		std::vector<TextBox*> ListBox;
+		std::vector<sf::RectangleShape*> firstRow, firstColumn, XBox;
+		std::vector<sf::Text*> firstRowText, firstColumnText, XText;
+		sf::Font* font;
+
+	public:
+		MatrixBox(float x, float y, float size, sf::Font* font, colorTheme theme);
+		~MatrixBox();
+		void readInput(std::set<GEdge*> &edges);
+		void update(const sf::Vector2f& mousePos, sf::Event& evnt);
+		void render(sf::RenderTarget& target);
 	};
 }
 

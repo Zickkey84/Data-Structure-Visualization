@@ -14,7 +14,7 @@ private:
 	sf::Text text, textVariable;
 	sf::Font *font;
     std::set <std::string> variableList;
-	int leftChild, rightChild, value;
+	int value;
 public:
 	TreeNode(sf::Vector2f position, float radius, int borderThickness,
         sf::Color vertexColor, sf::Color textColor, int value, sf::Font *font);
@@ -30,6 +30,7 @@ public:
     void setPosition(sf::Vector2f newPosition);
     void setSize(float newPercent);
     void setColor(sf::Color newVertexColor, sf::Color newTextColor);
+    void setFillColor(sf::Color newVertexColor, sf::Color newTextColor);
     void setValue(int newValue);
     void setLeftChild(int newLeftChild);
     void setRightChild(int newRightChild);

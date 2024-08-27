@@ -9,3 +9,6 @@ extern std::string SIZE_HEAP;
 extern std::string INSERT_HASH;
 extern std::string DELETE_HASH;
 extern std::string SEARCH_HASH;
+
+extern std::string MST_GRAPH;
+extern std::string CC_GRAPH;

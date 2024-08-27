@@ -7,7 +7,6 @@ TreeNode::TreeNode(sf::Vector2f position, float radius, int borderThickness, sf:
 	this->vertex.setPosition(position);
 	this->vertex.setOutlineThickness(borderThickness);
 
-	this->leftChild = this->rightChild = -1;
 	this->value = value;
 
 	this->vertexColor = vertexColor;
@@ -23,7 +22,7 @@ TreeNode::TreeNode(sf::Vector2f position, float radius, int borderThickness, sf:
 	this->text.setCharacterSize((int)radius / 3 * 2);
 	this->text.setString(std::to_string(value));
 	this->text.setOrigin({ round(this->text.getLocalBounds().width / 2.0f), round(this->text.getLocalBounds().height / 2.0f) });
-	this->text.setPosition(position + sf::Vector2f(0, - round(radius * 0.1)));
+	this->text.setPosition(position + sf::Vector2f(0, - round(radius * 0.15)));
 
 	this->textVariable.setFillColor(textColor);
 	this->textVariable.setCharacterSize((int)radius / 3 * 2);
@@ -95,6 +94,12 @@ void TreeNode::setColor(sf::Color newVertexColor, sf::Color newTextColor)
 	this->textColor = newTextColor;
 }
 
+void TreeNode::setFillColor(sf::Color newVertexColor, sf::Color newTextColor) {
+	this->vertex.setFillColor(newVertexColor);
+	this->vertex.setOutlineColor(newTextColor);
+	this->text.setFillColor(newTextColor);
+}
+
 void TreeNode::setValue(int newValue)
 {
 	this->value = newValue;
@@ -102,16 +107,6 @@ void TreeNode::setValue(int newValue)
 	this->text.setOrigin(round(this->text.getLocalBounds().left + this->text.getLocalBounds().width / 2),
 		round(this->text.getLocalBounds().top + this->text.getLocalBounds().height / 2));
 	this->text.setPosition(this->vertex.getPosition());
-}
-
-void TreeNode::setLeftChild(int newLeftChild)
-{
-	this->leftChild = newLeftChild;
-}
-
-void TreeNode::setRightChild(int newRightChild)
-{
-	this->rightChild = newRightChild;
 }
 
 void TreeNode::insertVariable(std::string variable)

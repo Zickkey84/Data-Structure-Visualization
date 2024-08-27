@@ -43,3 +43,22 @@ std::string SEARCH_HASH =
 						  "		if (index == this->size) \n			index = 0;\n" +
 						  "		if (index == hashCode(x))\n			return NULL;\n}\n" +
 						  "return index;";
+
+std::string MST_GRAPH = "for (int cnt = 0; cnt < V - 1; cnt++) {\n" +
+	        std::string("   int u = minKey(key, mstSet);\n") +
+			       	    "   mstSet[u] = true;\n" + 
+				        "   for (int v = 0; v < V; v++) {\n"
+						"	    if (graph[u][v] && !mstSet[v]\n" +
+				        "		    && graph[u][v] < key[v]){\n" +
+				        "			  parent[v] = u;\n" +
+			            "			  key[v] = graph[u][v];\n" +
+				        "       }\n" +
+						"   }\n}";
+
+extern std::string CC_GRAPH = "for (int v = 0; v < V; v++)\n" +
+			std::string("   visited[v] = false;\n") + 
+						"for (int v = 0; v < V; v++) {\n" +
+						"   if (visited[v] == false) {\n" +
+						"      DFSUtil(v, visited);\n" +
+						"      count += 1;\n   }\n}\n" +
+						"return count;";
