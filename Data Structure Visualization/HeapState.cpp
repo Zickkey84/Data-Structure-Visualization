@@ -213,7 +213,7 @@ void HeapState::update(const float& dt) {
 				sf::Text fileName;
 				fileName.setFont(this->fonts["LexendDeca-Regular"]);
 				fileName.setString(GetNameFileDialog(this->FileName));
-				fileName.setCharacterSize(22); 
+				fileName.setCharacterSize(22);
 				fileName.setFillColor(DarkBlue);
 				this->InputFileButton->setText(fileName);
 				setCurrentWorkingDirectory(currentDir);
@@ -245,7 +245,7 @@ void HeapState::update(const float& dt) {
 			}
 			if (this->createState == Random) {
 				x = this->InputRandomValue->getInput();
-				if(x <= 31)	a = generateRandomArray(x);
+				if (x <= 31)	a = generateRandomArray(x);
 			}
 			this->heap->arr = a;
 			this->heap->n = a.size();
@@ -254,22 +254,26 @@ void HeapState::update(const float& dt) {
 		}
 		case Insert:
 		{
-			int x = this->EnterTheValue->getInput();
-			this->heap->insert(x);
-			this->noti->setString(std::to_string(x) + std::string(" has been inserted"));
-			this->noti->setPosition(sf::Vector2f(1130, 490));
-			break;
-		}
-		case Delete :
-		{
-			int x = this->EnterTheValue->getInput();
-			if (this->heap->del(x)) {
-				this->noti->setString(std::to_string(x) + std::string(" has been deleted"));
+			if (this->EnterTheValue->getString() != "") {
+				int x = this->EnterTheValue->getInput();
+				this->heap->insert(x);
+				this->noti->setString(std::to_string(x) + std::string(" has been inserted"));
 				this->noti->setPosition(sf::Vector2f(1130, 490));
 			}
-			else {
-				this->noti->setString(std::to_string(x) + std::string(" is not in the heap"));
-				this->noti->setPosition(sf::Vector2f(1130, 490));
+			break;
+		}
+		case Delete:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				int x = this->EnterTheValue->getInput();
+				if (this->heap->del(x)) {
+					this->noti->setString(std::to_string(x) + std::string(" has been deleted"));
+					this->noti->setPosition(sf::Vector2f(1130, 490));
+				}
+				else {
+					this->noti->setString(std::to_string(x) + std::string(" is not in the heap"));
+					this->noti->setPosition(sf::Vector2f(1130, 490));
+				}
 			}
 			break;
 		}

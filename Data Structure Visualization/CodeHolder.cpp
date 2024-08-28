@@ -89,3 +89,32 @@ std::string SEARCH_TRIE = "TrieNode* temp = root;\n" +
 						  "   temp = temp->children[position];\n}\n" +
 						  "if (temp != NULL && temp->is_leaf == 1)\n" +
 						  "   return true;\nreturn false;";
+
+std::string INSERT_AVL = "if (root == NULL) {\n" +
+			 std::string("   root = makeNode(key);\n") + 
+					     "   return;\n}\n" +
+						 "Node* cur = root;\n" +
+						 "while (cur != NULL) {\n" +
+						 "   if (key <= cur->key) cur = cur->left;\n" +
+						 "   if (key > cur->key) cur = cur->right;\n}\n" +
+						 "cur = makeNode(key);\nrebalanceTree()\n";
+
+std::string DELETE_AVL= "if root is NULL: return NULL\n" +
+			std::string("if key < root.key:\n") + 
+					    "	root.left = deleteNode(root.left, key)\n" +
+						"else if key > root.key:\n" +
+						"   root.right = deleteNode(root.right, key)\n" +
+					    "else:\n" +
+						"   if root.left is NULL: return root.right\n" +
+						"   if root.right is NULL: return root.left\n" +
+						"   temp = minValueNode(root.right)\n" +
+						"   root.key = temp.key\n" +
+						"   root.right = deleteNode(root.right, temp.key)\n" +
+						"UpdateHeight() and rebalanceTree()";
+
+std::string SEARCH_AVL = "if (!root || root->key == key)\n" +
+			 std::string("   return root\n") + 
+					     "if (key < root->key)\n" +
+						 "   return search(root->left, key)\n" +
+						 "else\n" +
+						 "   return search(root.left, key)\n";

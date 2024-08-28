@@ -6,6 +6,7 @@ Tree234State::Tree234State(sf::RenderWindow* window, std::stack<State*>* states,
 	this->initFont();
 	this->initGUI();
 	this->initText();
+	this->initGraph();
 }
 
 Tree234State::~Tree234State()
@@ -16,7 +17,6 @@ Tree234State::~Tree234State()
 	delete this->DoButton;
 
 	// Text Box
-	delete this->InputManuallyValue;
 	delete this->InputRandomValue;
 	delete this->EnterTheValue;
 
@@ -24,6 +24,7 @@ Tree234State::~Tree234State()
 	delete this->EnterTheVal;
 	delete this->NumberOfVal;
 
+	delete this->graph;
 }
 
 void Tree234State::checkForEnd()
@@ -72,8 +73,7 @@ void Tree234State::initGUI()
 	list.push_back("Create");
 	list.push_back("Insert");
 	list.push_back("Delete");
-	list.push_back("Get Top");
-	list.push_back("Size");
+	list.push_back("Search");
 
 	this->OperationButton = new gui::DropdownList(1055, 100, 172, 50, &this->fonts["LexendDeca-Bold"], list,
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
@@ -81,7 +81,6 @@ void Tree234State::initGUI()
 
 	// Init Create Type Button
 	std::vector<std::string> typelist;
-	typelist.push_back("Manually");
 	typelist.push_back("Random");
 	typelist.push_back("File");
 
@@ -100,11 +99,6 @@ void Tree234State::initGUI()
 	this->InputFileButton = new gui::Button(1055, 210, 350, 50, "Input File", &this->fonts["LexendDeca-Bold"],
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
 		LightBlue, sf::Color(49, 53, 110), LightBlue);
-
-	// Init Manually Input Value Box
-
-	this->InputManuallyValue = new gui::TextBox(1055, 210, 350, 50, &this->fonts["LexendDeca-Regular"],
-		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
 
 	// Init Random Number of Val Box
 
@@ -135,6 +129,11 @@ void Tree234State::initText()
 	}
 }
 
+void Tree234State::initGraph()
+{
+	this->graph = new Tree234Graph(sf::Vector2f(550, 200), &this->fonts["LexendDeca-Regular"], (colorTheme)this->DarkMode, 30, 2.f);
+}
+
 
 void Tree234State::updateKeybinds(const float& dt)
 {
@@ -149,14 +148,12 @@ void Tree234State::updateOperationState()
 		this->operationState = Create;
 
 		std::string CrState = this->CreateType->getActiveEle();
-		if (CrState == "Manually") this->createState = Manually;
-		else if (CrState == "Random") this->createState = Random;
+		if (CrState == "Random") this->createState = Random;
 		else if (CrState == "File") this->createState = File;
 	}
 	else if (OpeState == "Insert") this->operationState = Insert;
 	else if (OpeState == "Delete") this->operationState = Delete;
-	else if (OpeState == "Get Top") this->operationState = GetTop;
-	else if (OpeState == "Size") this->operationState = Size;
+	else if (OpeState == "Search") this->operationState = Search;
 
 }
 
@@ -168,14 +165,6 @@ void Tree234State::update(const float& dt) {
 	this->updateOperationState();
 	if (this->operationState == Create) {
 		this->CreateType->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
-		if (this->createState == Manually) {
-			sf::Event evnt;
-			while (this->window->pollEvent(evnt)) {
-				if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
-					this->InputManuallyValue->update({ (float)this->MousePos.x, (float)this->MousePos.y }, evnt);
-				if (evnt.type == sf::Event::Closed) this->window->close();
-			}
-		}
 		if (this->createState == Random) {
 			sf::Event evnt;
 			while (this->window->pollEvent(evnt)) {
@@ -199,7 +188,7 @@ void Tree234State::update(const float& dt) {
 			}
 		}
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		sf::Event evnt;
 		while (this->window->pollEvent(evnt)) {
 			if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
@@ -208,6 +197,50 @@ void Tree234State::update(const float& dt) {
 		}
 	}
 	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
+	if (this->DoButton->isPressed()) {
+		switch (this->operationState) {
+		case Create:
+		{
+			std::vector<int> a; int x = 0;
+			if (this->createState == File) {
+				std::ifstream fin;
+				fin.open(this->FileName);
+				if (fin.is_open()) {
+					while (fin >> x) a.push_back(x);
+					fin.close();
+				}
+				else std::cout << "Error open input file!";
+			}
+			if (this->createState == Random) {
+				x = this->InputRandomValue->getInput();
+				if (x <= 35) {
+					a = generateRandomArray(x);
+				}
+			}
+			if (!a.empty()) {
+				this->graph->clear();
+				for (auto it : a) this->graph->insert(it);
+			}
+			break;
+		}
+		case Insert:
+		{
+			break;
+		}
+		case Delete:
+		{
+			break;
+		}
+		case Search:
+		{
+
+			break;
+		}
+		default:
+			break;
+		}
+		this->graph->update();
+	}
 }
 
 void Tree234State::render(sf::RenderTarget* target)
@@ -215,9 +248,6 @@ void Tree234State::render(sf::RenderTarget* target)
 	if (!target) target = this->window;
 	target->draw(this->BackGroundSprite);
 	this->BackButton->render(*target);
-	if (this->operationState == Create && this->createState == Manually) {
-		this->InputManuallyValue->render(*target);
-	}
 	if (this->operationState == Create && this->createState == Random) {
 		target->draw(*this->NumberOfVal);
 		this->InputRandomValue->render(*target);
@@ -228,10 +258,11 @@ void Tree234State::render(sf::RenderTarget* target)
 	if (this->operationState == Create) {
 		this->CreateType->render(*target);
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		target->draw(*this->EnterTheVal);
 		this->EnterTheValue->render(*target);
 	}
 	this->OperationButton->render(*target);
 	this->DoButton->render(*target);
+	this->graph->render(*target);
 }

@@ -1,4 +1,4 @@
-#include "AVLState.h"
+ #include "AVLState.h"
 
 AVLState::AVLState(sf::RenderWindow* window, std::stack<State*>* states, bool DarkMode) : State(window, states, DarkMode)
 {
@@ -6,6 +6,7 @@ AVLState::AVLState(sf::RenderWindow* window, std::stack<State*>* states, bool Da
 	this->initFont();
 	this->initGUI();
 	this->initText();
+	this->initGraph();
 }
 
 AVLState::~AVLState()
@@ -16,7 +17,6 @@ AVLState::~AVLState()
 	delete this->DoButton;
 
 	// Text Box
-	delete this->InputManuallyValue;
 	delete this->InputRandomValue;
 	delete this->EnterTheValue;
 
@@ -24,6 +24,10 @@ AVLState::~AVLState()
 	delete this->EnterTheVal;
 	delete this->NumberOfVal;
 
+	delete this->noti;
+	delete this->code;
+
+	delete this->graph;
 }
 
 void AVLState::checkForEnd()
@@ -72,8 +76,7 @@ void AVLState::initGUI()
 	list.push_back("Create");
 	list.push_back("Insert");
 	list.push_back("Delete");
-	list.push_back("Get Top");
-	list.push_back("Size");
+	list.push_back("Search");
 
 	this->OperationButton = new gui::DropdownList(1055, 100, 172, 50, &this->fonts["LexendDeca-Bold"], list,
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
@@ -81,11 +84,22 @@ void AVLState::initGUI()
 
 	// Init Create Type Button
 	std::vector<std::string> typelist;
-	typelist.push_back("Manually");
 	typelist.push_back("Random");
 	typelist.push_back("File");
 
 	this->CreateType = new gui::DropdownList(1055, 155, 350, 50, &this->fonts["LexendDeca-Bold"], typelist,
+		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
+		LightBlue, sf::Color(49, 53, 110), LightBlue);
+
+	// Init Speed Button
+	std::vector<std::string> speedlist;
+	speedlist.push_back("1x");
+	speedlist.push_back("0.5x");
+	speedlist.push_back("0.75x");
+	speedlist.push_back("1.5x");
+	speedlist.push_back("2x");
+
+	this->Speed = new gui::DropdownList(1055, 215, 350, 50, &this->fonts["LexendDeca-Bold"], speedlist,
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
 		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
@@ -101,11 +115,6 @@ void AVLState::initGUI()
 		sf::Color(49, 53, 110), 22, LightBlue, sf::Color(49, 53, 110), 1, HoverBlue, PressBlue,
 		LightBlue, sf::Color(49, 53, 110), LightBlue);
 
-	// Init Manually Input Value Box
-
-	this->InputManuallyValue = new gui::TextBox(1055, 210, 350, 50, &this->fonts["LexendDeca-Regular"],
-		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
-
 	// Init Random Number of Val Box
 
 	this->InputRandomValue = new gui::TextBox(1327, 210, 75, 50, &this->fonts["LexendDeca-Regular"],
@@ -114,25 +123,49 @@ void AVLState::initGUI()
 	// Init Enter The Value Box
 	this->EnterTheValue = new gui::TextBox(1322, 155, 75, 50, &this->fonts["LexendDeca-Regular"],
 		3, sf::Color(49, 53, 110), sf::Color::White, sf::Color(49, 53, 110), sf::Color(49, 53, 110));
+
+	// Init Arrow
+	this->arrow.setPointCount(3);
+	this->arrow.setPoint(0, sf::Vector2f(0, 0));
+	this->arrow.setPoint(1, sf::Vector2f(0, 15));
+	this->arrow.setPoint(2, sf::Vector2f(-15, 8));
+	if (DarkMode) this->arrow.setFillColor(LightBlue);
+	else this->arrow.setFillColor(DarkBlue);
+	this->arrow.setOrigin(sf::Vector2f(-15, 8));
 }
 
 
 void AVLState::initText()
 {
-	this->NumberOfVal = new sf::Text("Number Of Value (Max 40): ", this->fonts["LexendDeca-Regular"], 20);
+	this->NumberOfVal = new sf::Text("Number Of Value (Max 32): ", this->fonts["LexendDeca-Regular"], 20);
 	this->NumberOfVal->setPosition(sf::Vector2f(1055, 220));
 
 	this->EnterTheVal = new sf::Text("Enter The Value: ", this->fonts["LexendDeca-Regular"], 30);
 	this->EnterTheVal->setPosition(sf::Vector2f(1060, 160));
 
+	this->noti = new sf::Text("", this->fonts["LexendDeca-Regular"], 20);
+	this->noti->setPosition(sf::Vector2f(1150, 490));
+
+	this->code = new sf::Text("", this->fonts["LexendDeca-Regular"], 18);
+	this->code->setPosition(sf::Vector2f(1070, 555));
+
 	if (DarkMode) {
 		this->NumberOfVal->setFillColor(LightBlue);
 		this->EnterTheVal->setFillColor(LightBlue);
+		this->noti->setFillColor(LightBlue);
+		this->code->setFillColor(LightBlue);
 	}
 	else {
 		this->NumberOfVal->setFillColor(sf::Color(49, 53, 110));
 		this->EnterTheVal->setFillColor(sf::Color(49, 53, 110));
+		this->noti->setFillColor(DarkBlue);
+		this->code->setFillColor(DarkBlue);
 	}
+}
+
+void AVLState::initGraph()
+{
+	this->graph = new AVLGraph(sf::Vector2f(600, 200), 22.f, 2.f, colorTheme(this->DarkMode), &this->fonts["LexendDeca-Regular"]);
 }
 
 
@@ -147,17 +180,55 @@ void AVLState::updateOperationState()
 	std::string OpeState = this->OperationButton->getActiveEle();
 	if (OpeState == "Create") {
 		this->operationState = Create;
-
+		this->code->setString("");
 		std::string CrState = this->CreateType->getActiveEle();
-		if (CrState == "Manually") this->createState = Manually;
-		else if (CrState == "Random") this->createState = Random;
+		if (CrState == "Random") this->createState = Random;
 		else if (CrState == "File") this->createState = File;
 	}
-	else if (OpeState == "Insert") this->operationState = Insert;
-	else if (OpeState == "Delete") this->operationState = Delete;
-	else if (OpeState == "Get Top") this->operationState = GetTop;
-	else if (OpeState == "Size") this->operationState = Size;
+	else if (OpeState == "Insert") {
+		this->operationState = Insert;
+		this->code->setString(INSERT_AVL);
+		this->code->setPosition(sf::Vector2f(1100, 555));
+		this->code->setCharacterSize(15);
+	}
+	else if (OpeState == "Delete") {
+		this->operationState = Delete;
+		this->code->setString(DELETE_AVL);
+		this->code->setCharacterSize(15);
+		this->code->setPosition(sf::Vector2f(1070, 546));
+	}
+	else if (OpeState == "Search") {
+		this->operationState = Search;
+		this->code->setString(SEARCH_AVL);
+		this->code->setCharacterSize(20);
+		this->code->setPosition(sf::Vector2f(1070, 555));
+	}
 
+}
+
+void AVLState::updateNoti()
+{
+	OperationState x;
+	std::string OpeState = this->OperationButton->getActiveEle();
+	if (OpeState == "Create") x = Create;
+	else if (OpeState == "Insert") x = Insert;
+	else if (OpeState == "Delete") x = Delete;
+	else if (OpeState == "Search") x = Search;
+
+	if (x != this->operationState) {
+		this->noti->setString("");
+		this->arrowState = None;
+	}
+}
+
+void AVLState::updateSpeed()
+{
+	std::string speed = this->Speed->getActiveEle();
+	if (speed == "0.5x") this->speed = 0.5f;
+	else if (speed == "0.75x") this->speed = 0.75f;
+	else if (speed == "1x") this->speed = 1.f;
+	else if (speed == "1.5x") this->speed = 1.5f;
+	else this->speed = 2.f;
 }
 
 void AVLState::update(const float& dt) {
@@ -165,17 +236,11 @@ void AVLState::update(const float& dt) {
 	this->updateKeybinds(dt);
 	this->BackButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 	this->OperationButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
+	this->updateNoti();
+	this->updateSpeed();
 	this->updateOperationState();
 	if (this->operationState == Create) {
 		this->CreateType->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
-		if (this->createState == Manually) {
-			sf::Event evnt;
-			while (this->window->pollEvent(evnt)) {
-				if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
-					this->InputManuallyValue->update({ (float)this->MousePos.x, (float)this->MousePos.y }, evnt);
-				if (evnt.type == sf::Event::Closed) this->window->close();
-			}
-		}
 		if (this->createState == Random) {
 			sf::Event evnt;
 			while (this->window->pollEvent(evnt)) {
@@ -199,7 +264,7 @@ void AVLState::update(const float& dt) {
 			}
 		}
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		sf::Event evnt;
 		while (this->window->pollEvent(evnt)) {
 			if (evnt.type == sf::Event::TextEntered || evnt.type == sf::Event::MouseButtonPressed)
@@ -207,7 +272,91 @@ void AVLState::update(const float& dt) {
 			if (evnt.type == sf::Event::Closed) this->window->close();
 		}
 	}
+	if (this->operationState == Search) this->Speed->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
 	this->DoButton->update({ (float)this->MousePos.x, (float)this->MousePos.y }, dt, this->DarkMode);
+	if (this->DoButton->isPressed()) {
+		switch (this->operationState) {
+		case Create:
+		{
+			this->graph->clear();
+			std::vector<int> a; int x = 0;
+			if (this->createState == File) {
+				std::ifstream fin;
+				fin.open(this->FileName);
+				if (fin.is_open()) {
+					while (fin >> x) a.push_back(x);
+					fin.close();
+				}
+				else std::cout << "Error open input file!";
+			}
+			if (this->createState == Random) {
+				x = this->InputRandomValue->getInput();
+				if (x <= 32) a = generateRandomArray(x);
+			}
+			for (int i = 0; i < a.size() && i < 32; i++) {
+				size++;
+				this->graph->insert(a[i]);
+			}
+		}
+		case Insert:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				if (size < 32) {
+					int x = this->EnterTheValue->getInput();
+					this->graph->insert(x);
+					size++;
+					this->noti->setString(std::to_string(x) + " was inserted!");
+					this->noti->setPosition(sf::Vector2f(1150, 490));
+				}
+				else {
+					this->noti->setString("The AVLTree is full");
+					this->noti->setPosition(sf::Vector2f(1135, 490));
+				}
+			}
+			break;
+		}
+		case Delete:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				if (size > 0) {
+					int x = this->EnterTheValue->getInput();
+					if (this->graph->Delete(x)) {
+						this->noti->setString(std::to_string(x) + " was deleted!");
+						this->noti->setPosition(sf::Vector2f(1155, 490));
+						size--;
+					}
+					else {
+						this->noti->setString(std::to_string(x) + " is not in AVLTree!");
+						this->noti->setPosition(sf::Vector2f(1129, 490));
+					}
+				}
+				else {
+					this->noti->setString("The AVLTree is empty");
+					this->noti->setPosition(sf::Vector2f(1125, 490));
+				}
+			}
+			break;
+		}
+		case Search:
+		{
+			if (this->EnterTheValue->getString() != "") {
+				if (size > 0) {
+					this->input = this->EnterTheValue->getInput();
+					this->searching = true;
+					this->cur = this->graph->root;
+					this->noti->setString("Searching for " + std::to_string(input));
+					this->noti->setPosition(sf::Vector2f(1160, 490));
+					this->arrowState = Active;
+				}
+				else this->noti->setString("The AVLTree is empty");
+				this->noti->setPosition(sf::Vector2f(1125, 490));
+			}
+		}
+		default:
+			break;
+		}
+		this->graph->update();
+	}
 }
 
 void AVLState::render(sf::RenderTarget* target)
@@ -215,9 +364,7 @@ void AVLState::render(sf::RenderTarget* target)
 	if (!target) target = this->window;
 	target->draw(this->BackGroundSprite);
 	this->BackButton->render(*target);
-	if (this->operationState == Create && this->createState == Manually) {
-		this->InputManuallyValue->render(*target);
-	}
+
 	if (this->operationState == Create && this->createState == Random) {
 		target->draw(*this->NumberOfVal);
 		this->InputRandomValue->render(*target);
@@ -228,10 +375,47 @@ void AVLState::render(sf::RenderTarget* target)
 	if (this->operationState == Create) {
 		this->CreateType->render(*target);
 	}
-	if (this->operationState == Insert || this->operationState == Delete) {
+	if (this->operationState == Insert || this->operationState == Delete || this->operationState == Search) {
 		target->draw(*this->EnterTheVal);
 		this->EnterTheValue->render(*target);
 	}
 	this->OperationButton->render(*target);
 	this->DoButton->render(*target);
+	if (this->operationState == Search) this->Speed->render(*target);
+	if (this->searching) {
+		if (cur == NULL) {
+			this->searching = false;
+			this->noti->setString(std::to_string(input) + " is not found!");
+			this->noti->setPosition(sf::Vector2f(1155, 490));
+			this->arrow.setPosition(sf::Vector2f(1360, 595));
+		}
+		else {
+			cur->vertex->setHighlight(sf::Color::Red, this->graph->thickness * 2);
+			cur->vertex->render(*target);
+			sf::sleep(sf::seconds(0.75 / this->speed));
+			cur->vertex->setHighlight(this->graph->textColor, this->graph->thickness);
+			if (input > cur->value) {
+				cur = cur->right;
+				this->arrow.setPosition(sf::Vector2f(1375, 647));
+			}
+			else if (input < cur->value) {
+				cur = cur->left;
+				this->arrow.setPosition(sf::Vector2f(1360, 697));
+			}
+			else {
+				cur->vertex->setHighlight(sf::Color::Yellow, this->graph->thickness * 2);
+				cur->vertex->render(*target);
+				sf::sleep(sf::seconds(0.2 / this->speed));
+				this->searching = false;
+				this->noti->setString(std::to_string(input) + " is found!");
+				this->noti->setPosition(sf::Vector2f(1170, 490));
+				this->arrow.setPosition(sf::Vector2f(1360, 595));
+			}
+		}
+	}
+	this->graph->render(*target);
+	target->draw(*this->noti); target->draw(*this->code);
+	if (this->arrowState != None) target->draw(this->arrow);
 }
+
+

@@ -2,11 +2,13 @@
 
 #include "State.h"
 #include "GUI.h"
+#include "Tree234Graph.h"
+
 class Tree234State : public State
 {
 
-enum OperationState{Create = 0, Insert, Delete, GetTop, Size};
-enum CreateState{Manually = 0, Random, File};
+enum OperationState{Create = 0, Insert, Delete, Search};
+enum CreateState{Random = 0, File};
 private:
 	sf::Texture BackGroundTexture;
 	sf::Sprite BackGroundSprite;
@@ -22,7 +24,6 @@ private:
 	gui::DropdownList* OperationButton;
 	gui::DropdownList* CreateType;
 
-	gui::TextBox* InputManuallyValue;
 	gui::TextBox* InputRandomValue;
 	gui::TextBox* EnterTheValue;
 
@@ -31,6 +32,8 @@ private:
 
 	unsigned operationState = 0;
 	unsigned createState = 0;
+
+	Tree234Graph* graph;
 public:
 
 	// Constructor & Destructor
@@ -44,6 +47,7 @@ public:
 	void initBackground();
 	void initGUI();
 	void initText();
+	void initGraph();
 	// Update Funtions
 	void updateKeybinds(const float& dt);
 	void updateOperationState();

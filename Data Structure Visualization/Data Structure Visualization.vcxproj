@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="234TreeState.cpp" />
+    <ClCompile Include="AVLGraph.cpp" />
     <ClCompile Include="AVLState.cpp" />
     <ClCompile Include="CodeHolder.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -167,12 +168,14 @@
     <ClCompile Include="Miscellaneous.h" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="Tree234Graph.cpp" />
     <ClCompile Include="TreeNode.cpp" />
     <ClCompile Include="TrieGraph.cpp" />
     <ClCompile Include="TrieState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="234TreeState.h" />
+    <ClInclude Include="AVLGraph.h" />
     <ClInclude Include="AVLState.h" />
     <ClInclude Include="CodeHolder.h" />
     <ClInclude Include="Color.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="OpenFileDialog.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Tree234Graph.h" />
     <ClInclude Include="TreeNode.h" />
     <ClInclude Include="TrieGraph.h" />
     <ClInclude Include="TrieState.h" />
