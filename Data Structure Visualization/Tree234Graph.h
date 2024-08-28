@@ -21,7 +21,7 @@ struct Node234 {
     void setPosition(sf::Vector2f newPosition);
     void setSize(float newPercent);
     void setValue(int newValue);
-
+    void setHighlight(sf::Color color, float thickness);
     //Getters
     sf::Vector2f getPosition();
     int getValue();
@@ -77,6 +77,8 @@ public:
     bool deleteNode(int idGroup, int idNode);
 
     void insert(int value);
+    bool Delete(int value, int id);
+    bool Delete(int value);
 
     int findNodePos(int idGroup, int value);
     int findNode(int idGroup, int value);

@@ -69,12 +69,4 @@ public:
 
 	// Render Functions
 	void render(sf::RenderTarget* target = nullptr);
-
-public: //Struct
-	struct Node {
-		int val, depth, index, order;
-		Node* left, * right;
-		bool isHighlighted;
-	};
-	
 };

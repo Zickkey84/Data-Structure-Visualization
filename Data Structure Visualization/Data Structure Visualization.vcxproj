@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="234TreeAlgorithm.cpp" />
     <ClCompile Include="234TreeState.cpp" />
     <ClCompile Include="AVLGraph.cpp" />
     <ClCompile Include="AVLState.cpp" />

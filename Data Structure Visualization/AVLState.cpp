@@ -23,7 +23,6 @@ AVLState::~AVLState()
 	// Text
 	delete this->EnterTheVal;
 	delete this->NumberOfVal;
-
 	delete this->noti;
 	delete this->code;
 
@@ -348,8 +347,10 @@ void AVLState::update(const float& dt) {
 					this->noti->setPosition(sf::Vector2f(1160, 490));
 					this->arrowState = Active;
 				}
-				else this->noti->setString("The AVLTree is empty");
-				this->noti->setPosition(sf::Vector2f(1125, 490));
+				else {
+					this->noti->setString("The AVLTree is empty");
+					this->noti->setPosition(sf::Vector2f(1125, 490));
+				}
 			}
 		}
 		default:

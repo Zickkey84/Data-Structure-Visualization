@@ -118,3 +118,74 @@ std::string SEARCH_AVL = "if (!root || root->key == key)\n" +
 						 "   return search(root->left, key)\n" +
 						 "else\n" +
 						 "   return search(root.left, key)\n";
+
+std::string INSERT_234TREE = "if root is full :\n" +
+				 std::string("   root = splitRoot(root)\n") + 
+							 "insertNonFull(root, key)\n" +
+							 "return root\n" +
+							 "function insertNonFull(node, key) :\n" +
+							 " if node.isLeaf : insertKey(node, key)\n" +
+							 " else :\n" +
+							 "    i = findChildIndex(node, key)\n" +
+							 "    if node.children[i].isFull() :\n" +
+							 "    splitChild(node, i)\n" +
+							 " if key > node.keys[i]: i++\n"+
+							 " insertNonFull(node.children[i], key)";
+
+std::string DELETE_234TREE = "if root is leaf :\n" +
+				 std::string("   deleteKey(root, key)\n") + 
+							 "else :\n" +
+							 "   i = findChildIndex(root, key)\n" +
+							 "   if key in root.keys :\n" +
+							 "     if root.children[i].numKeys > 1:\n" +
+							 "       deletePredecessor(root.children[i])\n" +
+							 "     else :\n" +
+							 "       mergeChildren(root, i)\n" +
+							 "       delete(root.children[i], key)\n" +
+							 "	 else:\n"+
+							 "     if root.children[i].numKeys == 1 :\n" +
+							 "       fixChild(root, i)\n" + 
+							 "		 delete(root.children[i], key)";
+
+std::string SEARCH_234TREE = "i = 0\n" +
+				 std::string("while i < node.numKeys and key > node.keys[i] :\n") + 
+							 "    i += 1\n" +
+							 "if i < node.numKeys and key == node.keys[i] :\n" +
+							 "    return node\n" +
+							 "if node.isLeaf :\n" +
+							 "    return NULL\n" +
+							 "else :\n" +
+							 "    return search(node.children[i], key)\n";
+
+	
+
+	
+
+
+
+
+	
+		
+		
+			
+			
+
+		
+		
+			
+
+			
+				
+				
+		
+	
+	
+
+	
+		
+	
+		
+		
+			
+			
+

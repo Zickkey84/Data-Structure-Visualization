@@ -14,14 +14,15 @@ Node234::Node234(sf::Vector2f position, int value, sf::Font* font, sf::Color fil
 	this->rect.setFillColor(fillColor);
 	this->rect.setOutlineThickness(thickness);
 	this->rect.setOutlineColor(textColor);
-	this->rect.setOrigin(rect.getLocalBounds().left + rect.getLocalBounds().width / 2, rect.getLocalBounds().top + rect.getLocalBounds().height / 2);
+	this->rect.setOrigin(round(rect.getLocalBounds().left + rect.getLocalBounds().width / 2), round(rect.getLocalBounds().top + rect.getLocalBounds().height / 2));
 	this->rect.setPosition(position);
 
 	valueText.setFont(*font);
 	valueText.setStyle(sf::Text::Bold);
 	valueText.setString(std::to_string(value));
 	valueText.setCharacterSize(size / 3);
-	valueText.setOrigin(valueText.getLocalBounds().left + valueText.getLocalBounds().width / 2, valueText.getLocalBounds().top + valueText.getLocalBounds().height / 2);
+	valueText.setFillColor(textColor);
+	valueText.setOrigin(valueText.getLocalBounds().left + round(valueText.getLocalBounds().width / 2), valueText.getLocalBounds().top + round(valueText.getLocalBounds().height / 2));
 	valueText.setPosition(position);
 }
 
@@ -54,6 +55,12 @@ void Node234::setValue(int value)
 	valueText.setString(std::to_string(value));
 	valueText.setOrigin(valueText.getLocalBounds().left + valueText.getLocalBounds().width / 2, valueText.getLocalBounds().top + valueText.getLocalBounds().height / 2);
 	valueText.setPosition(rect.getPosition().x, rect.getPosition().y);
+}
+
+void Node234::setHighlight(sf::Color color, float thickness)
+{
+	this->rect.setOutlineColor(color);
+	this->rect.setOutlineThickness(thickness);
 }
 
 sf::Vector2f Node234::getPosition()
@@ -215,7 +222,6 @@ sf::RectangleShape Tree234Graph::getEdgeLine(sf::Vector2f startPosition, sf::Vec
 
 sf::Vector2f Tree234Graph::getPosition(int idGroup)
 {
-
 	auto& group = groups[idGroup];
 	if (group->nodes.empty()) {
 		std::cout << "Error in getPosition";
@@ -427,80 +433,6 @@ bool Tree234Graph::deleteNode(int idGroup, int idNode)
 	return false;
 }
 
-void Tree234Graph::insert(int value)
-{
-	if (this->nodes.empty()) {
-		int idNode = getMexNodeID();
-		int idGroup = getMexGroupID();
-		this->nodes[idNode] = new Node234(startPosition, value, font, fillColor, textColor, size, thickness);
-		this->groups[idGroup] = new Group234(std::vector<int>(), size, thickness);
-		root = idGroup;
-		insertNode(idGroup, idNode);
-		return;
-	}
-	int idGroup = root, par = -1;
-	while (true) {
-		if (groups[idGroup]->nodes.size() < 3 && idGroup != par) {
-			int nextIDGroup = findEdge(idGroup, value);
-			if (nextIDGroup == -1) {
-				int idNode = getMexNodeID();
-				this->nodes[idNode] = new Node234(startPosition, value, font, fillColor, textColor, size, thickness);
-				insertNode(idGroup, idNode);
-				break;
-			}
-			else {
-				par = idGroup;
-				idGroup = nextIDGroup;
-			}
-		}
-		else if (par == -1) {
-			std::vector <int> newGroupID = getMexGroupIDs(2);
-			int idLeftGroup = newGroupID[0], idRightGroup = newGroupID[1];
-			std::vector <int> edges = getEdges(idGroup);
-			this->groups[idLeftGroup] = new Group234(std::vector<int>(), size, thickness);
-			this->groups[idRightGroup] = new Group234(std::vector<int>(), size, thickness);
-			insertNode(idLeftGroup, groups[idGroup]->nodes[0]);
-			insertNode(idRightGroup, groups[idGroup]->nodes[2]);
-			deleteNode(idGroup, groups[idGroup]->nodes[0]);
-			deleteNode(idGroup, groups[idGroup]->nodes[1]);
-			setEdge(idGroup, 0, idLeftGroup);
-			setEdge(idGroup, 1, idRightGroup);
-			setEdge(idLeftGroup, 0, edges[0]);
-			setEdge(idLeftGroup, 1, edges[1]);
-			setEdge(idRightGroup, 0, edges[2]);
-			setEdge(idRightGroup, 1, edges[3]);
-		}
-		else if (idGroup != par) {
-			std::vector <int> newGroupID = getMexGroupIDs(2);
-			int idLeftGroup = newGroupID[0], idRightGroup = newGroupID[1];
-			std::vector <int> edges = getEdges(idGroup);
-			std::vector <int> parEdges = getEdges(par);
-			int idEdgePos = findEdgePos(par, value);
-			this->groups[idLeftGroup] = new Group234(std::vector<int>(), size, thickness);
-			this->groups[idRightGroup] = new Group234(std::vector<int>(), size, thickness);
-			insertNode(par, groups[idGroup]->nodes[1]);
-			insertNode(idRightGroup, groups[idGroup]->nodes[0]);
-			insertNode(idLeftGroup, groups[idGroup]->nodes[2]); 
-			delete this->groups[idGroup];
-			parEdges[idEdgePos] = idLeftGroup;
-			parEdges.insert(parEdges.begin() + idEdgePos + 1, idRightGroup);
-			for (int i = 0; i < parEdges.size(); i++) {
-				setEdge(par, i, parEdges[i]);
-			}
-			setEdge(idLeftGroup, 0, edges[0]);
-			setEdge(idLeftGroup, 1, edges[1]);
-			setEdge(idRightGroup, 0, edges[2]);
-			setEdge(idRightGroup, 1, edges[3]);
-			idGroup = par;
-		}
-		else {
-			int nextIDGroup = findEdge(idGroup, value);
-			par = idGroup;
-			idGroup = nextIDGroup;
-		}
-	}
-}
-
 int Tree234Graph::findNodePos(int idGroup, int value)
 {
 	auto& group = groups[idGroup];
@@ -548,6 +480,9 @@ int Tree234Graph::findEdgePos(int idGroup, int value)
 void Tree234Graph::update()
 {
 	arrangeBTree();
+	for (auto it : nodes) {
+		it.second->setHighlight(this->textColor, thickness);
+	}
 	this->Edgeslist.clear();
 	for (auto x = groups.begin(); x != groups.end(); x++) {
 		int idU = x->first;
@@ -556,9 +491,13 @@ void Tree234Graph::update()
 		for (int i = 0; i < 4; i++) {
 			if (x->second->listEdge.size() <= i || x->second->listEdge[i] == -1) continue;
 			int idV = x->second->listEdge[i];
-			sf::Vector2f curPositionV = getPosition(idV);
-			sf::RectangleShape line = getEdgeLine(getStartEdgePosition(idU, i, curPositionU), getEndEdgePosition(idV, curPositionV));
-			Edgeslist.push_back(line);
+			bool exist = false;
+			for (auto it : groups) if (it.first == idV && it.second != NULL) exist = true;
+			if (exist) {
+				sf::Vector2f curPositionV = getPosition(idV);
+				sf::RectangleShape line = getEdgeLine(getStartEdgePosition(idU, i, curPositionU), getEndEdgePosition(idV, curPositionV));
+				Edgeslist.push_back(line);
+			}
 		}
 	}
 }

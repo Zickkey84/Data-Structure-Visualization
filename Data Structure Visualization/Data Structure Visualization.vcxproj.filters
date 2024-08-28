@@ -129,6 +129,9 @@
     <ClCompile Include="Tree234Graph.cpp">
       <Filter>Header Files\Data Structure\234Tree</Filter>
     </ClCompile>
+    <ClCompile Include="234TreeAlgorithm.cpp">
+      <Filter>Header Files\Data Structure\234Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
