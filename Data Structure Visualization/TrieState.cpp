@@ -303,15 +303,21 @@ void TrieState::update(const float& dt) {
 			if (this->EnterTheValue->getString() != "") {
 				this->trieGraph->insertString(this->EnterTheValue->getString());
 				this->noti->setString(this->EnterTheValue->getString() + " was inserted");
+				this->noti->setPosition({ 1150,490 });
 			}
 			break;
 		}
 		case Delete:
 		{
 			if (this->EnterTheValue->getString() != "") {
-				if(this->trieGraph->deleteString(this->EnterTheValue->getString()))
+				if (this->trieGraph->deleteString(this->EnterTheValue->getString())) {
 					this->noti->setString(this->EnterTheValue->getString() + " was deleted");
-				else this->noti->setString(this->EnterTheValue->getString() + " isn't in Trie");
+					this->noti->setPosition({ 1150,490 });
+				}
+				else {
+					this->noti->setString(this->EnterTheValue->getString() + " isn't in Trie");
+					this->noti->setPosition({ 1140,490 });
+				}
 			}
 			break;
 		}
@@ -364,6 +370,7 @@ void TrieState::render(sf::RenderTarget* target)
 		index++;
 		if (this->trieGraph->findEdge(cur, charToString(x)) == -1) {
 			this->noti->setString(str + " is not found");
+			this->noti->setPosition({ 1140,490 });
 			this->arrow.setPosition({ 1350,650 });
 			this->arrowState = Active;
 			this->searching = false;
@@ -381,13 +388,14 @@ void TrieState::render(sf::RenderTarget* target)
 			this->trieGraph->nodes[cur]->setHighlight(this->trieGraph->textColor, this->trieGraph->thickness);
 			if (index == str.length() && this->trieGraph->nodes[cur]->getIsWord()) {
 				this->noti->setString(str + " is found");
+				this->noti->setPosition({ 1150,490 });
 				this->arrow.setPosition({ 1350,725 });
 				this->arrowState = Active;
 				this->searching = false;
 			}
 			else if (index == str.length() && !this->trieGraph->nodes[cur]->getIsWord()) {
 				this->noti->setString(str + " is not found");
-				this->arrow.setPosition({ 1350,747 });
+				this->arrow.setPosition({ 1360,747 });
 				this->arrowState = Active;
 				this->searching = false;
 			}

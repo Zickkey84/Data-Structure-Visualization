@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Data Structure\Trie">
       <UniqueIdentifier>{2ed5f7e8-e639-428e-a566-5b5f278e16e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Data Structure\AVL">
+      <UniqueIdentifier>{5747fac8-6b64-4c9e-931f-c34094821b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Data Structure\234Tree">
+      <UniqueIdentifier>{60d1b9c6-05aa-4137-aca8-cee21fcabf5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -65,12 +71,6 @@
     </ClCompile>
     <ClCompile Include="HeapGraph.cpp">
       <Filter>Header Files\Data Structure\Heap</Filter>
-    </ClCompile>
-    <ClCompile Include="234TreeState.cpp">
-      <Filter>Header Files\State</Filter>
-    </ClCompile>
-    <ClCompile Include="AVLState.cpp">
-      <Filter>Header Files\State</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>Header Files\State</Filter>
@@ -117,6 +117,18 @@
     <ClCompile Include="TrieGraph.cpp">
       <Filter>Header Files\Data Structure\Trie</Filter>
     </ClCompile>
+    <ClCompile Include="AVLState.cpp">
+      <Filter>Header Files\Data Structure\AVL</Filter>
+    </ClCompile>
+    <ClCompile Include="AVLGraph.cpp">
+      <Filter>Header Files\Data Structure\AVL</Filter>
+    </ClCompile>
+    <ClCompile Include="234TreeState.cpp">
+      <Filter>Header Files\Data Structure\234Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree234Graph.cpp">
+      <Filter>Header Files\Data Structure\234Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -130,12 +142,6 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Ulities</Filter>
-    </ClInclude>
-    <ClInclude Include="234TreeState.h">
-      <Filter>Header Files\State</Filter>
-    </ClInclude>
-    <ClInclude Include="AVLState.h">
-      <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="OpenFileDialog.h">
       <Filter>Ulities</Filter>
@@ -187,6 +193,18 @@
     </ClInclude>
     <ClInclude Include="TrieGraph.h">
       <Filter>Header Files\Data Structure\Trie</Filter>
+    </ClInclude>
+    <ClInclude Include="AVLState.h">
+      <Filter>Header Files\Data Structure\AVL</Filter>
+    </ClInclude>
+    <ClInclude Include="AVLGraph.h">
+      <Filter>Header Files\Data Structure\AVL</Filter>
+    </ClInclude>
+    <ClInclude Include="234TreeState.h">
+      <Filter>Header Files\Data Structure\234Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree234Graph.h">
+      <Filter>Header Files\Data Structure\234Tree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

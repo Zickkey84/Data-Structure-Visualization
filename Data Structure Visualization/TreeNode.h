@@ -34,7 +34,7 @@ public:
     std::string getVariableString();
     bool getIsWord();
     sf::Vector2f getPosition();
-
+    float getRadius();
     // Setters
     void setPosition(sf::Vector2f newPosition);
     void setSize(float newPercent);

@@ -16,3 +16,11 @@ extern std::string CC_GRAPH;
 extern std::string INSERT_TRIE;
 extern std::string DELETE_TRIE;
 extern std::string SEARCH_TRIE;
+
+extern std::string INSERT_AVL;
+extern std::string DELETE_AVL;
+extern std::string SEARCH_AVL;
+
+extern std::string INSERT_234TREE;
+extern std::string DELETE_234TREE;
+extern std::string SEARCH_234TREE;

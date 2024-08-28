@@ -101,6 +101,11 @@ sf::Vector2f TreeNode::getPosition()
 	return vertex.getPosition();
 }
 
+float TreeNode::getRadius()
+{
+	return this->vertex.getRadius();
+}
+
 void TreeNode::setPosition(sf::Vector2f newPosition)
 {
 	this->vertex.setPosition(newPosition);
