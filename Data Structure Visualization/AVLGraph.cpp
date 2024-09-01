@@ -131,9 +131,9 @@ bool AVLGraph::Delete(int value)
             path[index] = &(suc->right);
         }
     }
-    return true;
     balance(path);
     _size--;
+    return true;
 }
 
 void AVLGraph::clear()

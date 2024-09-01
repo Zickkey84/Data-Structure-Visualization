@@ -292,8 +292,8 @@ void AVLState::update(const float& dt) {
 				x = this->InputRandomValue->getInput();
 				if (x <= 32) a = generateRandomArray(x);
 			}
+			size = a.size();
 			for (int i = 0; i < a.size() && i < 32; i++) {
-				size++;
 				this->graph->insert(a[i]);
 			}
 		}
